@@ -103,7 +103,7 @@
    "Complete": false
   },
   "Team Player": {
-   "Complete": false
+   "Complete": true
   },
   "The Great Wall": {
    "Complete": false
@@ -404,7 +404,7 @@
    }
   ]
  },
- "launchCount": 4,
+ "launchCount": 8,
  "lc14173": 1,
  "lc14292": 1
 }

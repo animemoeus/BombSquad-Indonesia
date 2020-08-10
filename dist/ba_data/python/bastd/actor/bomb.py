@@ -391,6 +391,8 @@ class Blast(ba.Actor):
                                })
         if self.blast_type == 'ice':
             explosion.color = (0, 0.05, 0.4)
+        else:
+            explosion.color = (random.randint(0,2),random.randint(0,2),random.randint(0,2))
 
         ba.timer(1.0, explosion.delete)
 
@@ -544,8 +546,7 @@ class Blast(ba.Actor):
             # It looks better if we delay a bit.
             ba.timer(0.05, emit)
 
-        lcolor = ((0.6, 0.6, 1.0) if self.blast_type == 'ice' else
-                  (1, 0.3, 0.1))
+        lcolor = explosion.color
         light = ba.newnode('light',
                            attrs={
                                'position': position,
@@ -587,14 +588,16 @@ class Blast(ba.Actor):
         scorch = ba.newnode('scorch',
                             attrs={
                                 'position': position,
-                                'size': scorch_radius * 0.5,
+                                'size': scorch_radius * random.choice([0.5,1]),
                                 'big': (self.blast_type == 'tnt')
                             })
         if self.blast_type == 'ice':
             scorch.color = (1, 1, 1.5)
+        else:
+            scorch.color = explosion.color
 
-        ba.animate(scorch, 'presence', {3.000: 1, 13.000: 0})
-        ba.timer(13.0, scorch.delete)
+        ba.animate(scorch, 'presence', {3.000: 1, 50.000: 0})
+        ba.timer(50.0, scorch.delete)
 
         if self.blast_type == 'ice':
             ba.playsound(factory.hiss_sound, position=light.position)
