@@ -123,7 +123,7 @@ class FlagFactory:
                      ('modify_part_collision', 'physical', False)),
         )
 
-        self.flag_texture = ba.gettexture('flagColor')
+        self.flag_texture = ba.gettexture('tickets')
 
     @classmethod
     def get(cls) -> FlagFactory:
