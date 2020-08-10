@@ -33,8 +33,8 @@ if TYPE_CHECKING:
     from typing import Optional, Any, Dict, List, Type, Sequence
     import ba
 
-DEFAULT_TEAM_COLORS = ((0.1, 0.25, 1.0), (1.0, 0.25, 0.2))
-DEFAULT_TEAM_NAMES = ('Blue', 'Red')
+DEFAULT_TEAM_COLORS = ((1, 0, 0), (1, 1, 1))
+DEFAULT_TEAM_NAMES = ('Merah', 'Putih')
 
 
 class MultiTeamSession(Session):
