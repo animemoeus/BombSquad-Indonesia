@@ -41,7 +41,7 @@ max_party_size: 11
 # Options here are 'ffa' (free-for-all) and 'teams'
 # This value is only used if you do not supply a playlist_code (see below).
 # In that case the default teams or free-for-all playlist gets used.
-session_type: ffa
+session_type: teams
 
 # To host your own custom playlists, use the 'share' functionality in the
 # playlist editor in the regular version of the game.
@@ -80,4 +80,5 @@ ffa_series_length: 24
 # currently-signed-in account's id. To fetch info about an account,
 # your backend server can use the following url:
 # http://bombsquadgame.com/accountquery?id=ACCOUNT_ID_HERE
-#stats_url: https://mystatssite.com/showstats?player=${ACCOUNT}
+# stats_url: https://mystatssite.com/showstats?player=${ACCOUNT}
+stats_url: https://bombsquad.my.id/stats/
