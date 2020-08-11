@@ -188,6 +188,11 @@ class ScoreScreenActivity(Activity[EmptyPlayer, EmptyTeam]):
         from ba import _lang
         super().on_begin()
 
+        # save player stats to database
+        from . import serverstats
+        serverstats.update(self._stats)
+        # print(self._stats._player_records['4RT3R']._sessionplayer.get_account_id())
+
         # Pop up a 'press any button to continue' statement after our
         # min-view-time show a 'press any button to continue..'
         # thing after a bit.

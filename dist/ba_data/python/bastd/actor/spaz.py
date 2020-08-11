@@ -394,7 +394,6 @@ class Spaz(ba.Actor):
             self.node.handlemessage("impulse",self.node.position[0],self.node.position[1]-5,self.node.position[2],0,10,0,50,20,0,0,0,10,0)
             ba.emitfx(position=(self.node.position[0],self.node.position[1]-0.2,self.node.position[2]), velocity=(self.node.velocity[0]*5,self.node.velocity[1]*2,self.node.velocity[2]), count=random.randrange(12,20), scale=0.35, spread=0.31, chunk_type='spark')
 
-
         self._turbo_filter_add_press('jump')
 
     def on_jump_release(self) -> None:
