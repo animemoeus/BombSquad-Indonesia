@@ -242,6 +242,10 @@ class Spaz(ba.Actor):
         self.punch_callback: Optional[Callable[[Spaz], Any]] = None
         self.pick_up_powerup_callback: Optional[Callable[[Spaz], Any]] = None
 
+        #backflip
+        self.last_backflip_time = -9999
+        self.backflip_cooldown = 5000
+
     def exists(self) -> bool:
         return bool(self.node)
 
@@ -383,6 +387,14 @@ class Spaz(ba.Actor):
         if not self.node:
             return
         self.node.jump_pressed = True
+
+        if ba.time() - self.last_punch_time_ms < 300 and self.node.jump_pressed and self.node.punch_pressed and ba.time() - self.last_backflip_time >= self.backflip_cooldown:
+            self.node.handlemessage("impulse",self.node.position[0],self.node.position[1]-3,self.node.position[2],self.node.velocity[0],self.node.velocity[1],self.node.velocity[2],50*self.node.run,10*self.node.run,0,0,self.node.velocity[0],self.node.velocity[1],self.node.velocity[2])
+            self.node.handlemessage("impulse",self.node.position[0],self.node.position[1]-5,self.node.position[2],self.node.velocity[0],self.node.velocity[1],self.node.velocity[2],50*self.node.run,20*self.node.run,0,0,self.node.velocity[0],self.node.velocity[1],self.node.velocity[2])
+            self.node.handlemessage("impulse",self.node.position[0],self.node.position[1]-5,self.node.position[2],0,10,0,50,20,0,0,0,10,0)
+            ba.emitfx(position=(self.node.position[0],self.node.position[1]-0.2,self.node.position[2]), velocity=(self.node.velocity[0]*5,self.node.velocity[1]*2,self.node.velocity[2]), count=random.randrange(12,20), scale=0.35, spread=0.31, chunk_type='spark')
+
+
         self._turbo_filter_add_press('jump')
 
     def on_jump_release(self) -> None:
