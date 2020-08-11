@@ -644,7 +644,7 @@ class Spaz(ba.Actor):
             self.shield = ba.newnode('shield',
                                      owner=self.node,
                                      attrs={
-                                         'color': (0.3, 0.2, 2.0),
+                                         'color': (self.node.color),
                                          'radius': 1.3
                                      })
             self.node.connectattr('position_center', self.shield, 'position')
