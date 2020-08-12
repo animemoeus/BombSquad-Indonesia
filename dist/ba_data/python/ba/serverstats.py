@@ -23,8 +23,6 @@ def update_account_info(account_id,account_kills=0,account_killed=0,account_scor
         'account_characters': account_characters,
     }
 
-    print(data)
-
     requests.get(secrets.stats_server_address,params=data)
 
 def update(score_set):
