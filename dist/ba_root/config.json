@@ -156,7 +156,7 @@
  "Show Tutorial": false,
  "Signed In Last Session": false,
  "Team Tournament Playlist Randomize": true,
- "Team Tournament Playlist Selection": "testing",
+ "Team Tournament Playlist Selection": "Default Teams Playlist Copy",
  "Team Tournament Playlists": {
   "Default Teams Playlist Copy": [
    {
@@ -418,7 +418,7 @@
    }
   ]
  },
- "launchCount": 114,
+ "launchCount": 116,
  "lc14173": 1,
  "lc14292": 1
 }

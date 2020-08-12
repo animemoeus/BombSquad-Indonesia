@@ -34,7 +34,7 @@ if TYPE_CHECKING:
     import ba
 
 DEFAULT_TEAM_COLORS = ((1, 0, 0), (1, 1, 1))
-DEFAULT_TEAM_NAMES = ('Merah', 'Putih')
+DEFAULT_TEAM_NAMES = ('Red', 'White')
 
 
 class MultiTeamSession(Session):
