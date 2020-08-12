@@ -81,4 +81,4 @@ ffa_series_length: 24
 # your backend server can use the following url:
 # http://bombsquadgame.com/accountquery?id=ACCOUNT_ID_HERE
 # stats_url: https://mystatssite.com/showstats?player=${ACCOUNT}
-stats_url: https://bombsquad.my.id/stats/
+stats_url: https://bombsquad.my.id/stats/${ACCOUNT}
