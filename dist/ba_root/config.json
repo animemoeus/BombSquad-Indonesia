@@ -156,7 +156,7 @@
  "Show Tutorial": false,
  "Signed In Last Session": false,
  "Team Tournament Playlist Randomize": true,
- "Team Tournament Playlist Selection": "Default Teams Playlist Copy",
+ "Team Tournament Playlist Selection": "Garuda Teams",
  "Team Tournament Playlists": {
   "Default Teams Playlist Copy": [
    {
@@ -403,6 +403,251 @@
     "type": "bastd.game.conquest.ConquestGame"
    }
   ],
+  "Garuda Teams": [
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 120,
+     "map": "Courtyard"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Pro Mode": true,
+     "map": "Tower D"
+    },
+    "type": "bastd.game.easteregghunt.EasterEggHuntGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 300,
+     "map": "Step Right Up"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": true,
+     "Lives Per Player": 3,
+     "Respawn Times": 1.0,
+     "Solo Mode": true,
+     "Time Limit": 120,
+     "map": "Rampage"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 120,
+     "map": "Football Stadium"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Respawn Times": 1.0,
+     "Score to Win": 1,
+     "Time Limit": 60,
+     "map": "Hockey Stadium"
+    },
+    "type": "bastd.game.hockey.HockeyGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 60,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Monkey Face"
+    },
+    "type": "bastd.game.keepaway.KeepAwayGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": true,
+     "Lives Per Player": 3,
+     "Respawn Times": 1.0,
+     "Solo Mode": false,
+     "Time Limit": 120,
+     "map": "Big G"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 120,
+     "map": "Crag Castle"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Doom Shroom"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "map": "Rampage"
+    },
+    "type": "bastd.game.meteorshower.MeteorShowerGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 2,
+     "Time Limit": 300,
+     "map": "Roundabout"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Respawn Times": 1.0,
+     "Score to Win": 35,
+     "Time Limit": 300,
+     "map": "Football Stadium"
+    },
+    "type": "bastd.game.football.FootballTeamGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 0.25,
+     "Score to Win": 3,
+     "Time Limit": 60,
+     "map": "Rampage"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Enable Impact Bombs": true,
+     "Enable Triple Bombs": true,
+     "Target Count": 4,
+     "map": "Doom Shroom"
+    },
+    "type": "bastd.game.targetpractice.TargetPracticeGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 60,
+     "Respawn Times": 1.0,
+     "Time Limit": 120,
+     "map": "Happy Thoughts"
+    },
+    "type": "bastd.game.kingofthehill.KingOfTheHillGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 1.0,
+     "Score to Win": 2,
+     "Time Limit": 300,
+     "map": "Zigzag"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 300,
+     "map": "Happy Thoughts"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Bomb Spawning": 1000,
+     "Entire Team Must Finish": false,
+     "Epic Mode": true,
+     "Laps": 1,
+     "Mine Spawning": 2000,
+     "Time Limit": 60,
+     "map": "Big G"
+    },
+    "type": "bastd.game.race.RaceGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Monkey Face"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 60,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Lake Frigid"
+    },
+    "type": "bastd.game.keepaway.KeepAwayGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 3,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 120,
+     "map": "Big G"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": false,
+     "Lives Per Player": 3,
+     "Respawn Times": 1.0,
+     "Solo Mode": false,
+     "Time Limit": 120,
+     "map": "Crag Castle"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 0.25,
+     "Time Limit": 120,
+     "map": "Zigzag"
+    },
+    "type": "bastd.game.conquest.ConquestGame"
+   }
+  ],
   "testing": [
    {
     "settings": {
@@ -418,7 +663,7 @@
    }
   ]
  },
- "launchCount": 117,
+ "launchCount": 118,
  "lc14173": 1,
  "lc14292": 1
 }

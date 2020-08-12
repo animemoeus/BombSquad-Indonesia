@@ -48,7 +48,7 @@ session_type: teams
 # This will give you a numeric code you can enter here to host that
 # playlist.
 # playlist_code: 260002 #testing playlist
-playlist_code: 259809
+playlist_code: 260164
 
 # Whether to shuffle the playlist or play its games in designated order.
 playlist_shuffle: true
