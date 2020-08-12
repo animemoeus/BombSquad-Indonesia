@@ -41,7 +41,6 @@ def update(score_set):
             pass
 
         if account_id is not None:
-            print(score_set._player_records[player].__dict__)
             account_kills.setdefault(account_id, 0)  # make sure exists
             account_kills[account_id] += score_set._player_records[player].accum_kill_count
             account_killed.setdefault(account_id,0)
