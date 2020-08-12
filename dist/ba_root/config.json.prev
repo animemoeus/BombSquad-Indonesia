@@ -128,7 +128,7 @@
  "Auto Balance Teams": true,
  "Campaigns": {},
  "Default Player Profiles": {
-  "Client Input Device #1": "Tuama",
+  "Client Input Device #1": "Flopsy1234567890",
   "Client Input Device #2": "__account__"
  },
  "Free-for-All Playlist Randomize": true,
@@ -156,7 +156,7 @@
  "Show Tutorial": false,
  "Signed In Last Session": false,
  "Team Tournament Playlist Randomize": true,
- "Team Tournament Playlist Selection": "Default Teams Playlist Copy",
+ "Team Tournament Playlist Selection": "testing",
  "Team Tournament Playlists": {
   "Default Teams Playlist Copy": [
    {
@@ -418,7 +418,7 @@
    }
   ]
  },
- "launchCount": 103,
+ "launchCount": 114,
  "lc14173": 1,
  "lc14292": 1
 }
