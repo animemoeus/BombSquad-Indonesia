@@ -68,15 +68,17 @@ class UpdateThread(threading.Thread):
         self._account_characters = account_characters
 
     def run(self):
-        for account_id, kill_count in self._account_kills.items():
-            update_account_info(account_id=account_id,account_kills=kill_count)
-        for account_id, killed_count in self._account_killed.items():
-            update_account_info(account_id=account_id,account_killed=killed_count)
-        for account_id, scores_count in self._account_scores.items():
-            update_account_info(account_id=account_id,account_scores=scores_count)
-        for account_id, character in self._account_characters.items():
-            update_account_info(account_id=account_id,account_characters=character)
-        for account_id, name in self._account_name.items():
-            update_account_info(account_id=account_id,account_name=name)
-
-        print('Player Stats Updated.')
+        try:
+            for account_id, kill_count in self._account_kills.items():
+                update_account_info(account_id=account_id,account_kills=kill_count)
+            for account_id, killed_count in self._account_killed.items():
+                update_account_info(account_id=account_id,account_killed=killed_count)
+            for account_id, scores_count in self._account_scores.items():
+                update_account_info(account_id=account_id,account_scores=scores_count)
+            for account_id, character in self._account_characters.items():
+                update_account_info(account_id=account_id,account_characters=character)
+            for account_id, name in self._account_name.items():
+                update_account_info(account_id=account_id,account_name=name)
+            print('Player Stats Updated.')
+        except:
+            print('Failed To Update Player Stats')
