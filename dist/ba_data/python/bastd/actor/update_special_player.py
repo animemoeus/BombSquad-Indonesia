@@ -11,8 +11,6 @@ def main():
 	admin_list = json.loads(requests.get('https://bombsquad.my.id/stats/get_admin/').text)['admin_list']
 	kaizoku_ou_list = json.loads(requests.get('https://bombsquad.my.id/stats/get_kaizoku_ou/').text)['kaizoku_ou_list']
 
-	print(kaizoku_ou_list)
-
 	with open(f'{dir_path}/special_player.py') as file:
 		s = [row for row in file]
 		s[0] = 'admin_list = ' + str(admin_list) + '\n'
