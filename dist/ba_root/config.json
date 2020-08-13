@@ -128,7 +128,7 @@
  "Auto Balance Teams": true,
  "Campaigns": {},
  "Default Player Profiles": {
-  "Client Input Device #1": "Flopsy1234567890",
+  "Client Input Device #1": "__account__",
   "Client Input Device #2": "__account__"
  },
  "Free-for-All Playlist Randomize": true,
@@ -152,7 +152,7 @@
   }
  },
  "Plugins": {},
- "Port": 43210,
+ "Port": 1111,
  "Show Tutorial": false,
  "Signed In Last Session": false,
  "Team Tournament Playlist Randomize": true,
@@ -651,19 +651,19 @@
   "testing": [
    {
     "settings": {
-     "Balance Total Lives": false,
+     "Bomb Spawning": 2000,
+     "Entire Team Must Finish": false,
      "Epic Mode": false,
-     "Lives Per Player": 1,
-     "Respawn Times": 1.0,
-     "Solo Mode": false,
+     "Laps": 3,
+     "Mine Spawning": 4000,
      "Time Limit": 0,
-     "map": "Roundabout"
+     "map": "Big G"
     },
-    "type": "bastd.game.elimination.EliminationGame"
+    "type": "bastd.game.race.RaceGame"
    }
   ]
  },
- "launchCount": 118,
+ "launchCount": 119,
  "lc14173": 1,
  "lc14292": 1
 }

@@ -1002,11 +1002,11 @@ class Spaz(ba.Actor):
                 # self.on_punched(damage)
 
                 # If damage was significant, lets show it.
-                if damage > 350 and damage < 500:
+                if damage > 350 and damage < 700:
                     assert msg.force_direction is not None
                     ba.show_damage_count('-' + str(int(damage / 10)) + '%',
                                          msg.pos, msg.force_direction)
-                if damage >= 500:
+                if damage >= 700:
                     PopupText(
                         random.choice(curse_list),
                         color=(random.randint(0,3), random.randint(0,3), random.randint(0,3)),
@@ -1023,23 +1023,23 @@ class Spaz(ba.Actor):
                         scale=1.0,
                         spread=1.0)
 
-                    self.lightning_bolt(
-                        position=self.node.position,
-                        radius=3)
+                    # self.lightning_bolt(
+                    #     position=self.node.position,
+                    #     radius=3)
 
-                    gnode = self.activity.globalsnode
+                    # gnode = self.activity.globalsnode
 
-                    # create slow motion effect
-                    if not gnode.slow_motion:
-                        gnode.slow_motion = True
+                    # # create slow motion effect
+                    # if not gnode.slow_motion:
+                    #     gnode.slow_motion = True
 
-                        def off_sm():
-                            if gnode:
-                                gnode.slow_motion = False
-                        ba.timer(0.5, off_sm)
+                    #     def off_sm():
+                    #         if gnode:
+                    #             gnode.slow_motion = False
+                    #     ba.timer(0.5, off_sm)
 
-                    sounds = SpazFactory.get().punch_sound_strong
-                    sound = sounds[random.randrange(len(sounds))]
+                    # sounds = SpazFactory.get().punch_sound_strong
+                    # sound = sounds[random.randrange(len(sounds))]
                 else:
                     sound = SpazFactory.get().punch_sound
                 ba.playsound(sound, 1.0, position=self.node.position)
