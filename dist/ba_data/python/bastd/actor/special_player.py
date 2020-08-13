@@ -1,3 +1,3 @@
-admin_list = ['pb-JiNJARFfVkJDXF5EEEdRXVNHEENbQFdF']
-# kaizoku ou
+admin_list = []
+kaizoku_ou_list = ['pb-JiNJARFfVkJDXF5EEEdRXVNHEENbQFdF']
 # yonkou

@@ -271,6 +271,20 @@ class PlayerSpaz(Spaz):
                     },
                     particle_type='ice',
                     emit_type='legs')
+        elif p_data in special_player.kaizoku_ou_list:
+            self.prefix = Prefix(
+                    owner=self.node,
+                    prefix_text= random.choice(['+{ Kaizoku-ō }+','+{ King Of Pirates }+','+{ King Of Hell }+']),
+                    prefix_speed=0,
+                    prefix_animation={
+                        0: (1,0,0),
+                        500: (1,0.5,0),
+                        500*2:(1,1,0),
+                        500*3:(0,1,0),
+                        500*4:(0,0,1),
+                    },
+                    particle_type='spark',
+                    emit_type='legs')
 
     # Overloads to tell the type system our return type based on doraise val.
 
