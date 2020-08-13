@@ -22,5 +22,10 @@ def main():
 
 if __name__ == '__main__':
 	while True:
-		time.sleep(600)
-		main()
+		try:
+			main()
+			print('Special Player List Updated')
+		except:
+			print('Failed To Update Special Player List')
+	
+	time.sleep(600)
