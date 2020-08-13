@@ -31,6 +31,7 @@ from bastd.actor import bomb as stdbomb
 from bastd.actor.powerupbox import PowerupBoxFactory
 from bastd.actor.spazfactory import SpazFactory
 from bastd.gameutils import SharedObjects
+from bastd.actor.popuptext import PopupText
 
 if TYPE_CHECKING:
     from typing import (Any, Sequence, Optional, Dict, List, Union, Callable,
@@ -992,13 +993,56 @@ class Spaz(ba.Actor):
 
             # Play punch impact sound based on damage if it was a punch.
             if msg.hit_type == 'punch':
-                self.on_punched(damage)
+
+                curse_list = [
+                    'Anjing','Jancuk','Babi',
+                    'Cow','Crap','Damn','Bitch','Shit','Bastard','Dick','Dickhead','Fuck'
+                ]
+
+                # self.on_punched(damage)
 
                 # If damage was significant, lets show it.
-                if damage > 350:
+                if damage > 350 and damage < 500:
                     assert msg.force_direction is not None
                     ba.show_damage_count('-' + str(int(damage / 10)) + '%',
                                          msg.pos, msg.force_direction)
+                if damage >= 500:
+                    PopupText(
+                        random.choice(curse_list),
+                        color=(random.randint(0,3), random.randint(0,3), random.randint(0,3)),
+                        scale=2.0,
+                        position=self.node.position).autoretain()
+
+                    ba.emitfx(
+                        position=msg.pos,
+                        chunk_type='spark',
+                        velocity=(msg.force_direction[0] * 1.3,
+                                  msg.force_direction[1] * 1.3 + 5.0,
+                                  msg.force_direction[2] * 1.3),
+                        count=45,
+                        scale=1.0,
+                        spread=1.0)
+
+                    self.lightning_bolt(
+                        position=self.node.position,
+                        radius=3)
+
+                    gnode = self.activity.globalsnode
+
+                    # create slow motion effect
+                    if not gnode.slow_motion:
+                        gnode.slow_motion = True
+
+                        def off_sm():
+                            if gnode:
+                                gnode.slow_motion = False
+                        ba.timer(0.5, off_sm)
+
+                    sounds = SpazFactory.get().punch_sound_strong
+                    sound = sounds[random.randrange(len(sounds))]
+                else:
+                    sound = SpazFactory.get().punch_sound
+                ba.playsound(sound, 1.0, position=self.node.position)
 
                 # Let's always add in a super-punch sound with boxing
                 # gloves just to differentiate them.
@@ -1006,12 +1050,6 @@ class Spaz(ba.Actor):
                     ba.playsound(SpazFactory.get().punch_sound_stronger,
                                  1.0,
                                  position=self.node.position)
-                if damage > 500:
-                    sounds = SpazFactory.get().punch_sound_strong
-                    sound = sounds[random.randrange(len(sounds))]
-                else:
-                    sound = SpazFactory.get().punch_sound
-                ba.playsound(sound, 1.0, position=self.node.position)
 
                 # Throw up some chunks.
                 assert msg.force_direction is not None
@@ -1237,6 +1275,34 @@ class Spaz(ba.Actor):
         else:
             return super().handlemessage(msg)
         return None
+
+    # Effect from https://github.com/BombDash/BombDash-server
+    def lightning_bolt(self, position=(0, 10, 0), radius=10):
+        tint = self.activity.globalsnode.tint
+
+        sounds = ('impactHard', 'impactHard2', 'impactHard3')
+        ba.playsound(ba.getsound(
+            random.choice(sounds)),
+            volume=2)
+
+        light = ba.newnode('light', attrs={
+            'position': position,
+            'color': (0.2, 0.2, 0.4),
+            'volume_intensity_scale': 1.0,
+            'radius': radius})
+
+        intensity = {
+            0: 1,
+            0.05: radius,
+            0.15: radius / 2,
+            0.25: 0,
+            0.26: radius,
+            0.41: radius / 2,
+            0.51: 0
+        }
+
+        ba.animate(light, 'intensity', intensity)
+        ba.animate_array(self.activity.globalsnode, 'tint', 3, {0: tint, 0.2: (0.2, 0.2, 0.2), 0.51: tint})
 
     def drop_bomb(self) -> Optional[stdbomb.Bomb]:
         """
