@@ -1042,7 +1042,7 @@ class Spaz(ba.Actor):
                     # sound = sounds[random.randrange(len(sounds))]
                 else:
                     sound = SpazFactory.get().punch_sound
-                ba.playsound(sound, 1.0, position=self.node.position)
+                    ba.playsound(sound, 1.0, position=self.node.position)
 
                 # Let's always add in a super-punch sound with boxing
                 # gloves just to differentiate them.
