@@ -1023,23 +1023,23 @@ class Spaz(ba.Actor):
                         scale=1.0,
                         spread=1.0)
 
-                    # self.lightning_bolt(
-                    #     position=self.node.position,
-                    #     radius=3)
+                    self.lightning_bolt(
+                        position=self.node.position,
+                        radius=3)
 
-                    # gnode = self.activity.globalsnode
+                    gnode = self.activity.globalsnode
 
-                    # # create slow motion effect
-                    # if not gnode.slow_motion:
-                    #     gnode.slow_motion = True
+                    # create slow motion effect
+                    if not gnode.slow_motion:
+                        gnode.slow_motion = True
 
-                    #     def off_sm():
-                    #         if gnode:
-                    #             gnode.slow_motion = False
-                    #     ba.timer(0.5, off_sm)
+                        def off_sm():
+                            if gnode:
+                                gnode.slow_motion = False
+                        ba.timer(0.5, off_sm)
 
-                    # sounds = SpazFactory.get().punch_sound_strong
-                    # sound = sounds[random.randrange(len(sounds))]
+                    sounds = SpazFactory.get().punch_sound_strong
+                    sound = sounds[random.randrange(len(sounds))]
                 else:
                     sound = SpazFactory.get().punch_sound
                     ba.playsound(sound, 1.0, position=self.node.position)
