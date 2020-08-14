@@ -10,4 +10,5 @@ BombSquad Indonesia sever files, based on BombSquad [Ballistica](https://github.
 Some of the features on this server I got from:
 
 - Backflip : [SobyDamn](https://github.com/SobyDamn/BombSquad-Server-Files-OSUM-Server) 
-- Punch Effect : [BombDash](https://github.com/BombDash/BombDash-server)
+- Punch Effect & Title Effect : [BombDash](https://github.com/BombDash/BombDash-server)
+- Special Player List : [MythB](https://github.com/MythB/BombSquad-Mods)
