@@ -25,6 +25,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, TypeVar, overload
 
 import ba
+from ba._enums import SpecialChar
 from bastd.actor.spaz import Spaz
 
 if TYPE_CHECKING:
@@ -64,7 +65,7 @@ class Prefix(ba.Actor):
             owner: Optional[ba.Node] = None,
             prefix_text='',
             prefix_speed=250,
-            prefix_offset=(0, 1.4, 0),
+            prefix_offset=(0, 1.6, 0),
             prefix_animation=(-65528, -16713473, -15335680),
             emit_type='body',
             particle_type='spark'):
@@ -95,7 +96,7 @@ class Prefix(ba.Actor):
         self.owner.connectattr('torso_position', self.math_node, 'input2')
         self.prefix_node = ba.newnode('text', owner=self.owner, attrs={
             'text': prefix_text,
-            'scale': 0.01,
+            'scale': 0.014,
             'shadow': 0.5,
             'flatness': 0,
             'in_world': True,
@@ -142,11 +143,18 @@ class Prefix(ba.Actor):
             self.owner.position[2]
         )
 
-        ba.emitfx(position=position,
-                  count=10,
-                  scale=0.1 + random.random(),
-                  spread=0.15,
-                  chunk_type=self.particle_type)
+        if self.particle_type == 'splinter':
+            ba.emitfx(position=position,
+                      count=1,
+                      scale=0.02 + random.random(),
+                      spread=0.15,
+                      chunk_type=self.particle_type)
+        else:
+            ba.emitfx(position=position,
+                      count=10,
+                      scale=0.1 + random.random(),
+                      spread=0.15,
+                      chunk_type=self.particle_type)
 
     def _third_type_handler(self):
         sin = math.sin(self._offset) * self._radius
@@ -241,7 +249,7 @@ class PlayerSpaz(Spaz):
             # particle_type [ice, slime, spark, metal, rock, splinter]
             self.prefix = Prefix(
                     owner=self.node,
-                    prefix_text= 'PLUS ULTRA',
+                    prefix_text= f'{ba.charstr(SpecialChar.CROWN)}',
                     prefix_speed=0,
                     prefix_animation={
                         0: (1,0,0),
@@ -257,7 +265,7 @@ class PlayerSpaz(Spaz):
                     emit_type='legs')
             self.prefix = Prefix(
                     owner=self.node,
-                    prefix_text= 'PLUS ULTRA',
+                    prefix_text= '',
                     prefix_speed=0,
                     prefix_animation={
                         0: (1,0,0),
@@ -274,7 +282,7 @@ class PlayerSpaz(Spaz):
         elif p_data in special_player.kaizoku_ou_list:
             self.prefix = Prefix(
                     owner=self.node,
-                    prefix_text= random.choice(['+{ Kaizoku-ō }+','+{ King Of Pirates }+','+{ King Of Hell }+']),
+                    prefix_text=  '+{ Kaizoku-ō }+',
                     prefix_speed=0,
                     prefix_animation={
                         0: (1,0,0),
@@ -284,6 +292,20 @@ class PlayerSpaz(Spaz):
                         500*4:(0,0,1),
                     },
                     particle_type='spark',
+                    emit_type='legs')
+        elif p_data in special_player.yonkou_list:
+            self.prefix = Prefix(
+                    owner=self.node,
+                    prefix_text=  '+[ Yonkō ]+',
+                    prefix_speed=0,
+                    prefix_animation={
+                        0: (1,0,0),
+                        1000: (1,0,0),
+                        1000*2:(1,1,1),
+                        1000*3:(1,1,1),
+                        1000*4:(1,0,0),
+                    },
+                    particle_type='splinter',
                     emit_type='legs')
 
     # Overloads to tell the type system our return type based on doraise val.

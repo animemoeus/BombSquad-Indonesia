@@ -1,1 +1,669 @@
-{"Achievements": {"Boom Goes the Dynamite": {"Complete": false}, "Boxer": {"Complete": false}, "Dual Wielding": {"Complete": false}, "Flawless Victory": {"Complete": false}, "Free Loader": {"Complete": false}, "Gold Miner": {"Complete": false}, "Got the Moves": {"Complete": false}, "In Control": {"Complete": false}, "Last Stand God": {"Complete": false}, "Last Stand Master": {"Complete": false}, "Last Stand Wizard": {"Complete": false}, "Mine Games": {"Complete": false}, "Off You Go Then": {"Complete": false}, "Onslaught God": {"Complete": false}, "Onslaught Master": {"Complete": false}, "Onslaught Training Victory": {"Complete": false}, "Onslaught Wizard": {"Complete": false}, "Precision Bombing": {"Complete": false}, "Pro Boxer": {"Complete": false}, "Pro Football Shutout": {"Complete": false}, "Pro Football Victory": {"Complete": false}, "Pro Onslaught Victory": {"Complete": false}, "Pro Runaround Victory": {"Complete": false}, "Rookie Football Shutout": {"Complete": false}, "Rookie Football Victory": {"Complete": false}, "Rookie Onslaught Victory": {"Complete": false}, "Runaround God": {"Complete": false}, "Runaround Master": {"Complete": false}, "Runaround Wizard": {"Complete": false}, "Sharing is Caring": {"Complete": false}, "Stayin' Alive": {"Complete": false}, "Super Mega Punch": {"Complete": false}, "Super Punch": {"Complete": false}, "TNT Terror": {"Complete": false}, "Team Player": {"Complete": true}, "The Great Wall": {"Complete": false}, "The Wall": {"Complete": false}, "Uber Football Shutout": {"Complete": false}, "Uber Football Victory": {"Complete": false}, "Uber Onslaught Victory": {"Complete": false}, "Uber Runaround Victory": {"Complete": false}}, "Auto Account State": "Server", "Auto Balance Teams": true, "Campaigns": {}, "Default Player Profiles": {"Client Input Device #1": "__account__", "Client Input Device #2": "__account__"}, "Free-for-All Playlist Randomize": true, "Free-for-All Playlist Selection": "__default__", "Free-for-All Playlists": {}, "Local Account Name": "Server72306", "PSTR": 0, "Player Profiles": {"__account__": {"character": "Spaz", "color": [0.5, 0.25, 1.0], "highlight": [0.5, 0.25, 1.0]}}, "Plugins": {}, "Port": 43210, "Show Tutorial": false, "Signed In Last Session": false, "Team Tournament Playlist Randomize": true, "Team Tournament Playlist Selection": "Garuda Teams", "Team Tournament Playlists": {"Default Teams Playlist Copy": [{"settings": {"Epic Mode": false, "Flag Idle Return Time": 30, "Flag Touch Return Time": 0, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 120, "map": "Bridgit"}, "type": "bastd.game.capturetheflag.CaptureTheFlagGame"}, {"settings": {"Pro Mode": true, "map": "Tower D"}, "type": "bastd.game.easteregghunt.EasterEggHuntGame"}, {"settings": {"Epic Mode": false, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 300, "map": "Step Right Up"}, "type": "bastd.game.assault.AssaultGame"}, {"settings": {"Balance Total Lives": false, "Epic Mode": true, "Lives Per Player": 3, "Respawn Times": 1.0, "Solo Mode": true, "Time Limit": 120, "map": "Rampage"}, "type": "bastd.game.elimination.EliminationGame"}, {"settings": {"Epic Mode": false, "Kills to Win Per Player": 5, "Respawn Times": 1.0, "Time Limit": 120, "map": "Roundabout"}, "type": "bastd.game.deathmatch.DeathMatchGame"}, {"settings": {"Respawn Times": 1.0, "Score to Win": 1, "Time Limit": 60, "map": "Hockey Stadium"}, "type": "bastd.game.hockey.HockeyGame"}, {"settings": {"Hold Time": 60, "Respawn Times": 1.0, "Time Limit": 300, "map": "Monkey Face"}, "type": "bastd.game.keepaway.KeepAwayGame"}, {"settings": {"Balance Total Lives": false, "Epic Mode": true, "Lives Per Player": 1, "Respawn Times": 1.0, "Solo Mode": false, "Time Limit": 120, "map": "Tip Top"}, "type": "bastd.game.elimination.EliminationGame"}, {"settings": {"Epic Mode": false, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 120, "map": "Crag Castle"}, "type": "bastd.game.assault.AssaultGame"}, {"settings": {"Epic Mode": false, "Kills to Win Per Player": 5, "Respawn Times": 1.0, "Time Limit": 300, "map": "Doom Shroom"}, "type": "bastd.game.deathmatch.DeathMatchGame"}, {"settings": {"Epic Mode": false, "map": "Rampage"}, "type": "bastd.game.meteorshower.MeteorShowerGame"}, {"settings": {"Epic Mode": false, "Flag Idle Return Time": 30, "Flag Touch Return Time": 0, "Respawn Times": 1.0, "Score to Win": 2, "Time Limit": 300, "map": "Roundabout"}, "type": "bastd.game.capturetheflag.CaptureTheFlagGame"}, {"settings": {"Respawn Times": 1.0, "Score to Win": 35, "Time Limit": 300, "map": "Football Stadium"}, "type": "bastd.game.football.FootballTeamGame"}, {"settings": {"Epic Mode": true, "Respawn Times": 0.25, "Score to Win": 3, "Time Limit": 60, "map": "Bridgit"}, "type": "bastd.game.assault.AssaultGame"}, {"settings": {"Enable Impact Bombs": true, "Enable Triple Bombs": true, "Target Count": 3, "map": "Doom Shroom"}, "type": "bastd.game.targetpractice.TargetPracticeGame"}, {"settings": {"Hold Time": 30, "Respawn Times": 1.0, "Time Limit": 120, "map": "Tip Top"}, "type": "bastd.game.kingofthehill.KingOfTheHillGame"}, {"settings": {"Epic Mode": true, "Respawn Times": 1.0, "Score to Win": 2, "Time Limit": 300, "map": "Zigzag"}, "type": "bastd.game.assault.AssaultGame"}, {"settings": {"Epic Mode": false, "Flag Idle Return Time": 30, "Flag Touch Return Time": 0, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 300, "map": "Happy Thoughts"}, "type": "bastd.game.capturetheflag.CaptureTheFlagGame"}, {"settings": {"Bomb Spawning": 1000, "Entire Team Must Finish": true, "Epic Mode": true, "Laps": 1, "Mine Spawning": 2000, "Time Limit": 60, "map": "Big G"}, "type": "bastd.game.race.RaceGame"}, {"settings": {"Epic Mode": false, "Kills to Win Per Player": 5, "Respawn Times": 1.0, "Time Limit": 300, "map": "Monkey Face"}, "type": "bastd.game.deathmatch.DeathMatchGame"}, {"settings": {"Hold Time": 60, "Respawn Times": 1.0, "Time Limit": 300, "map": "Lake Frigid"}, "type": "bastd.game.keepaway.KeepAwayGame"}, {"settings": {"Epic Mode": false, "Flag Idle Return Time": 30, "Flag Touch Return Time": 3, "Respawn Times": 1.0, "Score to Win": 2, "Time Limit": 120, "map": "Tip Top"}, "type": "bastd.game.capturetheflag.CaptureTheFlagGame"}, {"settings": {"Balance Total Lives": false, "Epic Mode": false, "Lives Per Player": 3, "Respawn Times": 1.0, "Solo Mode": false, "Time Limit": 120, "map": "Crag Castle"}, "type": "bastd.game.elimination.EliminationGame"}, {"settings": {"Epic Mode": true, "Respawn Times": 0.25, "Time Limit": 120, "map": "Zigzag"}, "type": "bastd.game.conquest.ConquestGame"}], "Garuda Teams": [{"settings": {"Epic Mode": false, "Flag Idle Return Time": 30, "Flag Touch Return Time": 0, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 120, "map": "Courtyard"}, "type": "bastd.game.capturetheflag.CaptureTheFlagGame"}, {"settings": {"Pro Mode": true, "map": "Tower D"}, "type": "bastd.game.easteregghunt.EasterEggHuntGame"}, {"settings": {"Epic Mode": false, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 300, "map": "Step Right Up"}, "type": "bastd.game.assault.AssaultGame"}, {"settings": {"Balance Total Lives": false, "Epic Mode": true, "Lives Per Player": 3, "Respawn Times": 1.0, "Solo Mode": true, "Time Limit": 120, "map": "Rampage"}, "type": "bastd.game.elimination.EliminationGame"}, {"settings": {"Epic Mode": false, "Kills to Win Per Player": 5, "Respawn Times": 1.0, "Time Limit": 120, "map": "Football Stadium"}, "type": "bastd.game.deathmatch.DeathMatchGame"}, {"settings": {"Respawn Times": 1.0, "Score to Win": 1, "Time Limit": 60, "map": "Hockey Stadium"}, "type": "bastd.game.hockey.HockeyGame"}, {"settings": {"Hold Time": 60, "Respawn Times": 1.0, "Time Limit": 300, "map": "Monkey Face"}, "type": "bastd.game.keepaway.KeepAwayGame"}, {"settings": {"Balance Total Lives": false, "Epic Mode": true, "Lives Per Player": 3, "Respawn Times": 1.0, "Solo Mode": false, "Time Limit": 120, "map": "Big G"}, "type": "bastd.game.elimination.EliminationGame"}, {"settings": {"Epic Mode": false, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 120, "map": "Crag Castle"}, "type": "bastd.game.assault.AssaultGame"}, {"settings": {"Epic Mode": false, "Kills to Win Per Player": 5, "Respawn Times": 1.0, "Time Limit": 300, "map": "Doom Shroom"}, "type": "bastd.game.deathmatch.DeathMatchGame"}, {"settings": {"Epic Mode": false, "map": "Rampage"}, "type": "bastd.game.meteorshower.MeteorShowerGame"}, {"settings": {"Epic Mode": false, "Flag Idle Return Time": 30, "Flag Touch Return Time": 0, "Respawn Times": 1.0, "Score to Win": 2, "Time Limit": 300, "map": "Roundabout"}, "type": "bastd.game.capturetheflag.CaptureTheFlagGame"}, {"settings": {"Respawn Times": 1.0, "Score to Win": 35, "Time Limit": 300, "map": "Football Stadium"}, "type": "bastd.game.football.FootballTeamGame"}, {"settings": {"Epic Mode": true, "Respawn Times": 0.25, "Score to Win": 3, "Time Limit": 60, "map": "Rampage"}, "type": "bastd.game.assault.AssaultGame"}, {"settings": {"Enable Impact Bombs": true, "Enable Triple Bombs": true, "Target Count": 4, "map": "Doom Shroom"}, "type": "bastd.game.targetpractice.TargetPracticeGame"}, {"settings": {"Hold Time": 60, "Respawn Times": 1.0, "Time Limit": 120, "map": "Happy Thoughts"}, "type": "bastd.game.kingofthehill.KingOfTheHillGame"}, {"settings": {"Epic Mode": true, "Respawn Times": 1.0, "Score to Win": 2, "Time Limit": 300, "map": "Zigzag"}, "type": "bastd.game.assault.AssaultGame"}, {"settings": {"Epic Mode": true, "Flag Idle Return Time": 30, "Flag Touch Return Time": 0, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 300, "map": "Happy Thoughts"}, "type": "bastd.game.capturetheflag.CaptureTheFlagGame"}, {"settings": {"Bomb Spawning": 1000, "Entire Team Must Finish": false, "Epic Mode": true, "Laps": 1, "Mine Spawning": 2000, "Time Limit": 60, "map": "Big G"}, "type": "bastd.game.race.RaceGame"}, {"settings": {"Epic Mode": false, "Kills to Win Per Player": 5, "Respawn Times": 1.0, "Time Limit": 300, "map": "Monkey Face"}, "type": "bastd.game.deathmatch.DeathMatchGame"}, {"settings": {"Hold Time": 60, "Respawn Times": 1.0, "Time Limit": 300, "map": "Lake Frigid"}, "type": "bastd.game.keepaway.KeepAwayGame"}, {"settings": {"Epic Mode": false, "Flag Idle Return Time": 30, "Flag Touch Return Time": 3, "Respawn Times": 1.0, "Score to Win": 3, "Time Limit": 120, "map": "Big G"}, "type": "bastd.game.capturetheflag.CaptureTheFlagGame"}, {"settings": {"Balance Total Lives": false, "Epic Mode": false, "Lives Per Player": 3, "Respawn Times": 1.0, "Solo Mode": false, "Time Limit": 120, "map": "Crag Castle"}, "type": "bastd.game.elimination.EliminationGame"}, {"settings": {"Epic Mode": true, "Respawn Times": 0.25, "Time Limit": 120, "map": "Zigzag"}, "type": "bastd.game.conquest.ConquestGame"}], "testing": [{"settings": {"Bomb Spawning": 2000, "Entire Team Must Finish": false, "Epic Mode": false, "Laps": 3, "Mine Spawning": 4000, "Time Limit": 0, "map": "Big G"}, "type": "bastd.game.race.RaceGame"}]}, "launchCount": 190, "lc14173": 1, "lc14292": 1}
+{
+ "Achievements": {
+  "Boom Goes the Dynamite": {
+   "Complete": false
+  },
+  "Boxer": {
+   "Complete": false
+  },
+  "Dual Wielding": {
+   "Complete": false
+  },
+  "Flawless Victory": {
+   "Complete": false
+  },
+  "Free Loader": {
+   "Complete": false
+  },
+  "Gold Miner": {
+   "Complete": false
+  },
+  "Got the Moves": {
+   "Complete": false
+  },
+  "In Control": {
+   "Complete": false
+  },
+  "Last Stand God": {
+   "Complete": false
+  },
+  "Last Stand Master": {
+   "Complete": false
+  },
+  "Last Stand Wizard": {
+   "Complete": false
+  },
+  "Mine Games": {
+   "Complete": false
+  },
+  "Off You Go Then": {
+   "Complete": false
+  },
+  "Onslaught God": {
+   "Complete": false
+  },
+  "Onslaught Master": {
+   "Complete": false
+  },
+  "Onslaught Training Victory": {
+   "Complete": false
+  },
+  "Onslaught Wizard": {
+   "Complete": false
+  },
+  "Precision Bombing": {
+   "Complete": false
+  },
+  "Pro Boxer": {
+   "Complete": false
+  },
+  "Pro Football Shutout": {
+   "Complete": false
+  },
+  "Pro Football Victory": {
+   "Complete": false
+  },
+  "Pro Onslaught Victory": {
+   "Complete": false
+  },
+  "Pro Runaround Victory": {
+   "Complete": false
+  },
+  "Rookie Football Shutout": {
+   "Complete": false
+  },
+  "Rookie Football Victory": {
+   "Complete": false
+  },
+  "Rookie Onslaught Victory": {
+   "Complete": false
+  },
+  "Runaround God": {
+   "Complete": false
+  },
+  "Runaround Master": {
+   "Complete": false
+  },
+  "Runaround Wizard": {
+   "Complete": false
+  },
+  "Sharing is Caring": {
+   "Complete": false
+  },
+  "Stayin' Alive": {
+   "Complete": false
+  },
+  "Super Mega Punch": {
+   "Complete": false
+  },
+  "Super Punch": {
+   "Complete": false
+  },
+  "TNT Terror": {
+   "Complete": false
+  },
+  "Team Player": {
+   "Complete": true
+  },
+  "The Great Wall": {
+   "Complete": false
+  },
+  "The Wall": {
+   "Complete": false
+  },
+  "Uber Football Shutout": {
+   "Complete": false
+  },
+  "Uber Football Victory": {
+   "Complete": false
+  },
+  "Uber Onslaught Victory": {
+   "Complete": false
+  },
+  "Uber Runaround Victory": {
+   "Complete": false
+  }
+ },
+ "Auto Account State": "Server",
+ "Auto Balance Teams": true,
+ "Campaigns": {},
+ "Default Player Profiles": {
+  "Client Input Device #1": "__account__",
+  "Client Input Device #2": "__account__"
+ },
+ "Free-for-All Playlist Randomize": true,
+ "Free-for-All Playlist Selection": "__default__",
+ "Free-for-All Playlists": {},
+ "Local Account Name": "Server72306",
+ "PSTR": 0,
+ "Player Profiles": {
+  "__account__": {
+   "character": "Spaz",
+   "color": [
+    0.5,
+    0.25,
+    1.0
+   ],
+   "highlight": [
+    0.5,
+    0.25,
+    1.0
+   ]
+  }
+ },
+ "Plugins": {},
+ "Port": 43210,
+ "Show Tutorial": false,
+ "Signed In Last Session": false,
+ "Team Tournament Playlist Randomize": true,
+ "Team Tournament Playlist Selection": "Garuda Teams",
+ "Team Tournament Playlists": {
+  "Default Teams Playlist Copy": [
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 120,
+     "map": "Bridgit"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Pro Mode": true,
+     "map": "Tower D"
+    },
+    "type": "bastd.game.easteregghunt.EasterEggHuntGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 300,
+     "map": "Step Right Up"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": true,
+     "Lives Per Player": 3,
+     "Respawn Times": 1.0,
+     "Solo Mode": true,
+     "Time Limit": 120,
+     "map": "Rampage"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 120,
+     "map": "Roundabout"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Respawn Times": 1.0,
+     "Score to Win": 1,
+     "Time Limit": 60,
+     "map": "Hockey Stadium"
+    },
+    "type": "bastd.game.hockey.HockeyGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 60,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Monkey Face"
+    },
+    "type": "bastd.game.keepaway.KeepAwayGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": true,
+     "Lives Per Player": 1,
+     "Respawn Times": 1.0,
+     "Solo Mode": false,
+     "Time Limit": 120,
+     "map": "Tip Top"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 120,
+     "map": "Crag Castle"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Doom Shroom"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "map": "Rampage"
+    },
+    "type": "bastd.game.meteorshower.MeteorShowerGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 2,
+     "Time Limit": 300,
+     "map": "Roundabout"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Respawn Times": 1.0,
+     "Score to Win": 35,
+     "Time Limit": 300,
+     "map": "Football Stadium"
+    },
+    "type": "bastd.game.football.FootballTeamGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 0.25,
+     "Score to Win": 3,
+     "Time Limit": 60,
+     "map": "Bridgit"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Enable Impact Bombs": true,
+     "Enable Triple Bombs": true,
+     "Target Count": 3,
+     "map": "Doom Shroom"
+    },
+    "type": "bastd.game.targetpractice.TargetPracticeGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 30,
+     "Respawn Times": 1.0,
+     "Time Limit": 120,
+     "map": "Tip Top"
+    },
+    "type": "bastd.game.kingofthehill.KingOfTheHillGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 1.0,
+     "Score to Win": 2,
+     "Time Limit": 300,
+     "map": "Zigzag"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 300,
+     "map": "Happy Thoughts"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Bomb Spawning": 1000,
+     "Entire Team Must Finish": true,
+     "Epic Mode": true,
+     "Laps": 1,
+     "Mine Spawning": 2000,
+     "Time Limit": 60,
+     "map": "Big G"
+    },
+    "type": "bastd.game.race.RaceGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Monkey Face"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 60,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Lake Frigid"
+    },
+    "type": "bastd.game.keepaway.KeepAwayGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 3,
+     "Respawn Times": 1.0,
+     "Score to Win": 2,
+     "Time Limit": 120,
+     "map": "Tip Top"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": false,
+     "Lives Per Player": 3,
+     "Respawn Times": 1.0,
+     "Solo Mode": false,
+     "Time Limit": 120,
+     "map": "Crag Castle"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 0.25,
+     "Time Limit": 120,
+     "map": "Zigzag"
+    },
+    "type": "bastd.game.conquest.ConquestGame"
+   }
+  ],
+  "Garuda Teams": [
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 120,
+     "map": "Courtyard"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Pro Mode": true,
+     "map": "Tower D"
+    },
+    "type": "bastd.game.easteregghunt.EasterEggHuntGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 300,
+     "map": "Step Right Up"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": true,
+     "Lives Per Player": 3,
+     "Respawn Times": 1.0,
+     "Solo Mode": true,
+     "Time Limit": 120,
+     "map": "Rampage"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 120,
+     "map": "Football Stadium"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Respawn Times": 1.0,
+     "Score to Win": 1,
+     "Time Limit": 60,
+     "map": "Hockey Stadium"
+    },
+    "type": "bastd.game.hockey.HockeyGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 60,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Monkey Face"
+    },
+    "type": "bastd.game.keepaway.KeepAwayGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": true,
+     "Lives Per Player": 3,
+     "Respawn Times": 1.0,
+     "Solo Mode": false,
+     "Time Limit": 120,
+     "map": "Big G"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 120,
+     "map": "Crag Castle"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Doom Shroom"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "map": "Rampage"
+    },
+    "type": "bastd.game.meteorshower.MeteorShowerGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 2,
+     "Time Limit": 300,
+     "map": "Roundabout"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Respawn Times": 1.0,
+     "Score to Win": 35,
+     "Time Limit": 300,
+     "map": "Football Stadium"
+    },
+    "type": "bastd.game.football.FootballTeamGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 0.25,
+     "Score to Win": 3,
+     "Time Limit": 60,
+     "map": "Rampage"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Enable Impact Bombs": true,
+     "Enable Triple Bombs": true,
+     "Target Count": 4,
+     "map": "Doom Shroom"
+    },
+    "type": "bastd.game.targetpractice.TargetPracticeGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 60,
+     "Respawn Times": 1.0,
+     "Time Limit": 120,
+     "map": "Happy Thoughts"
+    },
+    "type": "bastd.game.kingofthehill.KingOfTheHillGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 1.0,
+     "Score to Win": 2,
+     "Time Limit": 300,
+     "map": "Zigzag"
+    },
+    "type": "bastd.game.assault.AssaultGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 0,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 300,
+     "map": "Happy Thoughts"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Bomb Spawning": 1000,
+     "Entire Team Must Finish": false,
+     "Epic Mode": true,
+     "Laps": 1,
+     "Mine Spawning": 2000,
+     "Time Limit": 60,
+     "map": "Big G"
+    },
+    "type": "bastd.game.race.RaceGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Kills to Win Per Player": 5,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Monkey Face"
+    },
+    "type": "bastd.game.deathmatch.DeathMatchGame"
+   },
+   {
+    "settings": {
+     "Hold Time": 60,
+     "Respawn Times": 1.0,
+     "Time Limit": 300,
+     "map": "Lake Frigid"
+    },
+    "type": "bastd.game.keepaway.KeepAwayGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": false,
+     "Flag Idle Return Time": 30,
+     "Flag Touch Return Time": 3,
+     "Respawn Times": 1.0,
+     "Score to Win": 3,
+     "Time Limit": 120,
+     "map": "Big G"
+    },
+    "type": "bastd.game.capturetheflag.CaptureTheFlagGame"
+   },
+   {
+    "settings": {
+     "Balance Total Lives": false,
+     "Epic Mode": false,
+     "Lives Per Player": 3,
+     "Respawn Times": 1.0,
+     "Solo Mode": false,
+     "Time Limit": 120,
+     "map": "Crag Castle"
+    },
+    "type": "bastd.game.elimination.EliminationGame"
+   },
+   {
+    "settings": {
+     "Epic Mode": true,
+     "Respawn Times": 0.25,
+     "Time Limit": 120,
+     "map": "Zigzag"
+    },
+    "type": "bastd.game.conquest.ConquestGame"
+   }
+  ],
+  "testing": [
+   {
+    "settings": {
+     "Bomb Spawning": 2000,
+     "Entire Team Must Finish": false,
+     "Epic Mode": false,
+     "Laps": 3,
+     "Mine Spawning": 4000,
+     "Time Limit": 0,
+     "map": "Big G"
+    },
+    "type": "bastd.game.race.RaceGame"
+   }
+  ]
+ },
+ "launchCount": 230,
+ "lc14173": 1,
+ "lc14292": 1
+}
