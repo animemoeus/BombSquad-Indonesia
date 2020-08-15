@@ -36,7 +36,10 @@ def save(msg,client_id):
 				'account_id': player['account_id']
 			}
 
-			SaveChat(player['name'],msg,player['account_id']).start()
+			try:
+				SaveChat(player['name'],msg,player['account_id']).start()
+			except:
+				print('Failed To Update Chat')
 
 
 class SaveChat(threading.Thread):

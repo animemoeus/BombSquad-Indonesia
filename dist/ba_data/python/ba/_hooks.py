@@ -337,6 +337,10 @@ def filter_chat_message(msg: str, client_id: int) -> Optional[str]:
     to ignore the message.
     """
 
+    # ignore empty message
+    if msg == '':
+        return
+
     from . import chats
     chats.save(msg,client_id)
 
