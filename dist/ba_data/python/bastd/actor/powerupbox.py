@@ -120,6 +120,7 @@ class PowerupBoxFactory:
         self.tex_health = ba.gettexture('powerupHealth')
         self.tex_land_mines = ba.gettexture('powerupLandMines')
         self.tex_curse = ba.gettexture('powerupCurse')
+        self.tex_random = ba.gettexture('achievementEmpty')
         self.health_powerup_sound = ba.getsound('healthPowerup')
         self.powerup_sound = ba.getsound('powerup01')
         self.powerdown_sound = ba.getsound('powerdown01')
@@ -254,6 +255,8 @@ class PowerupBox(ba.Actor):
             tex = factory.tex_health
         elif poweruptype == 'curse':
             tex = factory.tex_curse
+        elif poweruptype == 'random':
+            tex = factory.tex_random
         else:
             raise ValueError('invalid poweruptype: ' + str(poweruptype))
 

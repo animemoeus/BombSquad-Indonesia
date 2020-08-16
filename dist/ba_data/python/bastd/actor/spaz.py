@@ -32,6 +32,7 @@ from bastd.actor.powerupbox import PowerupBoxFactory
 from bastd.actor.spazfactory import SpazFactory
 from bastd.gameutils import SharedObjects
 from bastd.actor.popuptext import PopupText
+from bastd.actor import powerupbox as stdpowerup
 
 if TYPE_CHECKING:
     from typing import (Any, Sequence, Optional, Dict, List, Union, Callable,
@@ -849,6 +850,69 @@ class Spaz(ba.Actor):
                 self.node.hurt = 0
                 self._last_hit_time = None
                 self._num_times_hit = 0
+            elif msg.poweruptype == 'random':
+
+                value = random.randint(1,2)
+
+                if value == 1: # Big Sticky Bomb
+                    stdbomb.Bomb(
+                        bomb_type='sticky',
+                        position=(self.node.position[0],
+                                  self.node.position[1] + 3,
+                                  self.node.position[2]),
+                        source_player=self.source_player,
+                        owner=self.node,
+                        blast_radius=10.0,
+                        bomb_scale=3.0 ).autoretain()
+                elif value == 2: #Freeze the player
+                    self.node.handlemessage(ba.FreezeMessage())
+                elif value == 3: # Empty powerup
+                    chunk_type = (
+                        'ice',
+                        'rock',
+                        'metal',
+                        'spark',
+                        'splinter',
+                        'slime')
+
+                    ba.emitfx(
+                        position=self.node.position,
+                        velocity=(random.random() * 2,
+                                  random.random() * 2,
+                                  random.random() * 2),
+                        count=600,
+                        spread=random.random(),
+                        chunk_type=random.choice(chunk_type))
+                    ba.playsound(ba.getsound('corkPop'))
+                elif value == 4: # Rain powerup spawn
+                    position = self.node.position
+
+                    def rain_wrapper():
+                        p_type = stdpowerup.PowerupBoxFactory.get().get_random_powerup_type()
+
+                        new_position = (
+                            -10 + position[0] + random.random() * 20,
+                            position[1] + 6,
+                            -10 + position[2] + random.random() * 20
+                        )
+
+                        stdpowerup.PowerupBox(poweruptype=p_type,
+                                              position=new_position).autoretain()
+
+                        if random.random() > 0.04:
+                            ba.timer(0.1, rain_wrapper)
+
+                    rain_wrapper()
+                elif value == 5: #Blast the player position
+                    stdbomb.Blast(position=self.node.position,
+                      velocity=self.node.velocity,
+                      blast_radius=1.0,
+                      blast_type='normal',
+                      source_player=None,
+                      hit_type='punch',
+                      hit_subtype='normal')
+
+
 
             self.node.handlemessage('flash')
             if msg.sourcenode:
