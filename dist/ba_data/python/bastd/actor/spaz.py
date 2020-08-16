@@ -852,7 +852,7 @@ class Spaz(ba.Actor):
                 self._num_times_hit = 0
             elif msg.poweruptype == 'random':
 
-                value = random.randint(1,2)
+                value = random.randint(1,5)
 
                 if value == 1: # Big Sticky Bomb
                     stdbomb.Bomb(
@@ -911,7 +911,6 @@ class Spaz(ba.Actor):
                       source_player=None,
                       hit_type='punch',
                       hit_subtype='normal')
-
 
 
             self.node.handlemessage('flash')
