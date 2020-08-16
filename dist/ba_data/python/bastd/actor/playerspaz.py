@@ -246,6 +246,27 @@ class PlayerSpaz(Spaz):
 
         importlib.reload(special_player)
         if p_data in special_player.admin_list:
+            # Animate charter color
+            color = {
+                0: (0, 0, 3), 0.5: (0, 3, 0),
+                1: (3, 0, 0), 1.5: (0, 0, 3)
+            }
+            highlight = {
+                0: (3, 0, 0), 0.5: (0, 0, 0),
+                1: (0, 0, 3), 1.5: (3, 0, 0)
+            }
+
+            def do_rainbow(player):
+                ba.animate_array(self.node,
+                                 'color', 3, color, True)
+                ba.animate_array(self.node,
+                                 'highlight', 3, highlight, True)
+                self.node.handlemessage(
+                    'celebrate', 6000)
+
+            do_rainbow(self)
+
+            # Title
             # particle_type [ice, slime, spark, metal, rock, splinter]
             self.prefix = Prefix(
                     owner=self.node,
