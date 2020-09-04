@@ -852,7 +852,7 @@ class Spaz(ba.Actor):
                 self._num_times_hit = 0
             elif msg.poweruptype == 'random':
 
-                value = random.randint(1,5)
+                value = random.randint(1,7)
 
                 if value == 1: # Big Sticky Bomb
                     stdbomb.Bomb(
@@ -911,6 +911,30 @@ class Spaz(ba.Actor):
                       source_player=None,
                       hit_type='punch',
                       hit_subtype='normal')
+                elif value == 6: # Super punch
+                    # print(self.node)
+                    self.node.name = 'Saitama'
+                    self.node.color = (2,2,0)
+                    self.node.head_model = None
+                    self.node.torso_model = None
+                    self.node.upper_leg_model = None
+                    self.node.lower_leg_model = None
+                    self.upper_arm_model = None
+                    self._punch_power_scale = 3
+                elif value == 7: # Insane bomb
+                    self.blast_radius = 10
+                    self.node.name = 'ISIS'
+                    factory = SpazFactory.get()
+                    self.equip_shields(decay=factory.shield_decay_rate > 0)
+
+                    # Change player model
+                    self.node.torso_model = ba.getmodel('tnt')
+                    self.node.color_mask_texture = ba.gettexture('tnt')
+                    self.node.color_texture = ba.gettexture('tnt')
+                    self.node.highlight = (1, 1, 1)
+                    self.node.color = (1, 1, 1)
+                    self.node.head_model = None
+                    self.node.style = 'cyborg'
 
 
             self.node.handlemessage('flash')

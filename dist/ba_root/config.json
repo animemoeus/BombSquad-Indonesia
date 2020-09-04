@@ -128,7 +128,7 @@
  "Auto Balance Teams": true,
  "Campaigns": {},
  "Default Player Profiles": {
-  "Client Input Device #1": "__account__",
+  "Client Input Device #1": "arter",
   "Client Input Device #2": "__account__"
  },
  "Free-for-All Playlist Randomize": true,
@@ -861,7 +861,7 @@
    }
   ]
  },
- "launchCount": 321,
+ "launchCount": 357,
  "lc14173": 1,
  "lc14292": 1
 }
