@@ -1,6 +1,6 @@
 # BombSquad Indonesia
 
-BombSquad Indonesia sever files, based on BombSquad [Ballistica](https://github.com/efroemling/ballistica).
+BombSquad Indonesia server files, based on BombSquad [Ballistica](https://github.com/efroemling/ballistica).
 
 
 ## Credit
