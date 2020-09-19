@@ -2,8 +2,6 @@
 
 BombSquad Indonesia sever files, based on BombSquad [Ballistica](https://github.com/efroemling/ballistica).
 
-## Server Stats
-- [https://bombsquad.my.id/stats](https://bombsquad.my.id/stats)
 
 ## Credit
 
