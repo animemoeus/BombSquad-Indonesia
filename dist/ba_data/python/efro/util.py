@@ -536,6 +536,21 @@ def make_hash(obj: Any) -> int:
     return hash(tuple(frozenset(sorted(new_obj.items()))))
 
 
+def float_hash_from_string(s: str) -> float:
+    """Given a string value, returns a float between 0 and 1.
+
+    If consistent across processes. Can be useful for assigning db ids
+    shard values for efficient parallel processing.
+    """
+    import hashlib
+
+    hash_bytes = hashlib.md5(s.encode()).digest()
+
+    # Generate a random 64 bit int from hash digest bytes.
+    ival = int.from_bytes(hash_bytes[:8])
+    return ival / ((1 << 64) - 1)
+
+
 def asserttype(obj: Any, typ: type[T]) -> T:
     """Return an object typed as a given type.
 
@@ -709,6 +724,27 @@ def compact_id(num: int) -> str:
     return _compact_id(
         num, '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
     )
+
+
+def caller_source_location() -> str:
+    """Returns source file name and line of the code calling us.
+
+    Example: 'mymodule.py:23'
+    """
+    try:
+        import inspect
+
+        frame = inspect.currentframe()
+        for _i in range(2):
+            if frame is None:
+                raise RuntimeError()
+            frame = frame.f_back
+        if frame is None:
+            raise RuntimeError()
+        fname = os.path.basename(frame.f_code.co_filename)
+        return f'{fname}:{frame.f_lineno}'
+    except Exception:
+        return '<unknown source location>'
 
 
 def unchanging_hostname() -> str:

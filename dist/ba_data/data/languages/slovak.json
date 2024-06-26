@@ -603,6 +603,7 @@
     "localProfileText": "(lokálny profil)",
     "nameDescriptionText": "Meno Hráča",
     "nameText": "Meno",
+    "profileAlreadyExistsText": "Profil s týmto menom už existuje.",
     "randomText": "náhodne",
     "titleEditText": "Upraviť Profil",
     "titleNewText": "Nový Profil",
@@ -684,6 +685,8 @@
     "duplicateText": "Duplikovať\nPlaylist",
     "editText": "Upraviť\nPlaylist",
     "newText": "Nový\nPlaylist",
+    "pointsToWinText": "Body ku výhre",
+    "seriesLengthText": "Dĺžka Série",
     "showTutorialText": "Ukázať Tutoriál",
     "shuffleGameOrderText": "Náhodné Poradie Hier",
     "titleText": "Upraviť ${TYPE} Playlisty"
@@ -1304,6 +1307,9 @@
   "signInWithGameCenterText": "Ak chceš použiť GameCircle účet,\nprihlás sa s Game Center aplikáciou.",
   "singleGamePlaylistNameText": "Len ${GAME}",
   "singlePlayerCountText": "1 hráč",
+  "sizeLargeText": "Velké",
+  "sizeMediumText": "Stredné",
+  "sizeSmallText": "Malé",
   "soloNameFilterText": "Sólo ${NAME}",
   "soundtrackTypeNames": {
     "CharSelect": "Výber Charakteru",
