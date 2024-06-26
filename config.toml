@@ -32,7 +32,7 @@ enable_default_kick_voting = true
 # try to use the address your server contacts it from, but this may
 # be an ipv6 address these days so you may need to provide an ipv4
 # address explicitly.
-#public_ipv4_address = "123.123.123.123"
+public_ipv4_address = "103.76.120.132"
 
 # You can optionally provide an ipv6 address for your server for the
 # public server list. Unlike ipv4, a server is not required to have
