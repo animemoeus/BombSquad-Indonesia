@@ -32,7 +32,7 @@ enable_default_kick_voting = true
 # try to use the address your server contacts it from, but this may
 # be an ipv6 address these days so you may need to provide an ipv4
 # address explicitly.
-public_ipv4_address = "103.76.120.132"
+# public_ipv4_address = "103.76.120.132"
 
 # You can optionally provide an ipv6 address for your server for the
 # public server list. Unlike ipv4, a server is not required to have
@@ -49,7 +49,7 @@ public_ipv4_address = "103.76.120.132"
 #
 # 43210 is the default and the only port that will show up in the
 # LAN browser tab.
-port = 43210
+# port = 43210
 
 # Max devices in the party. Note that this does *NOT* mean max
 # players. Any device in the party can have more than one player on
@@ -154,7 +154,7 @@ ffa_series_length = 24
 # Whether to enable the queue where players can line up before
 # entering your server. Disabling this can be used as a workaround
 # to deal with queue spamming attacks.
-enable_queue = true
+# enable_queue = true
 
 # Protocol version we host with. Currently the default is 33 which
 # still allows older 1.4 game clients to connect. Explicitly setting
