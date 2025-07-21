@@ -2,10 +2,10 @@
 # This is a Docker-optimized configuration file
 
 # Name of our server in the public parties list
-party_name = "Docker BombSquad Server"
+party_name = "Indonesia | FFA"
 
 # Set to false by default for security - enable via environment variable
-party_is_public = false
+party_is_public = true
 
 # Enable client authentication by default
 authenticate_clients = true
@@ -14,7 +14,7 @@ authenticate_clients = true
 port = 43210
 
 # Reasonable default party size
-max_party_size = 6
+max_party_size = 11
 
 # Default session type
 session_type = "ffa"
@@ -49,8 +49,8 @@ protocol_version = 35
 dont_write_bytecode = true
 
 # Team configuration
-team_names = ["Red", "Blue"]
-team_colors = [[0.1, 0.25, 1.0], [1.0, 0.25, 0.2]]
+team_names = ["Merah", "Putih"]
+team_colors = [[1, 0, 0], [1, 1, 1]]
 
 # Log levels for debugging
 [log_levels]
