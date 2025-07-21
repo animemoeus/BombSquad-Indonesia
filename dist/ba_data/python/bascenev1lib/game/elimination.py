@@ -2,11 +2,12 @@
 #
 """Elimination mini-game."""
 
-# ba_meta require api 8
+# ba_meta require api 9
 # (see https://ballistica.net/wiki/meta-tag-system)
 
 from __future__ import annotations
 
+import weakref
 import logging
 from typing import TYPE_CHECKING, override
 
@@ -27,6 +28,7 @@ class Icon(bs.Actor):
         player: Player,
         position: tuple[float, float],
         scale: float,
+        *,
         show_lives: bool = True,
         show_death: bool = True,
         name_scale: float = 1.0,
@@ -36,7 +38,7 @@ class Icon(bs.Actor):
     ):
         super().__init__()
 
-        self._player = player
+        self._player = weakref.ref(player)  # Avoid ref loops.
         self._show_lives = show_lives
         self._show_death = show_death
         self._name_scale = name_scale
@@ -109,8 +111,9 @@ class Icon(bs.Actor):
 
     def update_for_lives(self) -> None:
         """Update for the target player's current lives."""
-        if self._player:
-            lives = self._player.lives
+        player = self._player()
+        if player:
+            lives = player.lives
         else:
             lives = 0
         if self._show_lives:
@@ -154,7 +157,8 @@ class Icon(bs.Actor):
                     0.55: 0.2,
                 },
             )
-            lives = self._player.lives
+            player = self._player()
+            lives = player.lives if player else 0
             if lives == 0:
                 bs.timer(0.6, self.update_for_lives)
 
@@ -251,6 +255,7 @@ class EliminationGame(bs.TeamGameActivity[Player, Team]):
     @override
     @classmethod
     def get_supported_maps(cls, sessiontype: type[bs.Session]) -> list[str]:
+        # (Pylint Bug?) pylint: disable=missing-function-docstring
         assert bs.app.classic is not None
         return bs.app.classic.getmaps('melee')
 
@@ -276,6 +281,7 @@ class EliminationGame(bs.TeamGameActivity[Player, Team]):
 
     @override
     def get_instance_description(self) -> str | Sequence:
+        # (Pylint Bug?) pylint: disable=missing-function-docstring
         return (
             'Last team standing wins.'
             if isinstance(self.session, bs.DualTeamSession)
@@ -284,6 +290,7 @@ class EliminationGame(bs.TeamGameActivity[Player, Team]):
 
     @override
     def get_instance_description_short(self) -> str | Sequence:
+        # (Pylint Bug?) pylint: disable=missing-function-docstring
         return (
             'last team standing wins'
             if isinstance(self.session, bs.DualTeamSession)
@@ -292,6 +299,7 @@ class EliminationGame(bs.TeamGameActivity[Player, Team]):
 
     @override
     def on_player_join(self, player: Player) -> None:
+        # (Pylint Bug?) pylint: disable=missing-function-docstring
         player.lives = self._lives_per_player
 
         if self._solo_mode:
@@ -480,6 +488,7 @@ class EliminationGame(bs.TeamGameActivity[Player, Team]):
 
     @override
     def spawn_player(self, player: Player) -> bs.Actor:
+        """Spawn a player (override)."""
         actor = self.spawn_player_spaz(player, self._get_spawn_point(player))
         if not self._solo_mode:
             bs.timer(0.3, bs.Call(self._print_lives, player))
@@ -507,6 +516,7 @@ class EliminationGame(bs.TeamGameActivity[Player, Team]):
 
     @override
     def on_player_leave(self, player: Player) -> None:
+        # (Pylint Bug?) pylint: disable=missing-function-docstring
         super().on_player_leave(player)
         player.icons = []
 
@@ -602,6 +612,7 @@ class EliminationGame(bs.TeamGameActivity[Player, Team]):
 
     @override
     def end_game(self) -> None:
+        """End the game."""
         if self.has_ended():
             return
         results = bs.GameResults()

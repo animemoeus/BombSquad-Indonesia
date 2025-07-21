@@ -48,18 +48,21 @@ class PartyWindow(bui.Window):
                 on_outside_click_call=self.close_with_sound,
                 scale_origin_stack_offset=origin,
                 scale=(
-                    2.0
+                    1.8
                     if uiscale is bui.UIScale.SMALL
-                    else 1.35 if uiscale is bui.UIScale.MEDIUM else 1.0
+                    else 1.3 if uiscale is bui.UIScale.MEDIUM else 0.9
                 ),
                 stack_offset=(
-                    (0, -10)
+                    (200, -10)
                     if uiscale is bui.UIScale.SMALL
                     else (
-                        (240, 0) if uiscale is bui.UIScale.MEDIUM else (330, 20)
+                        (260, 0) if uiscale is bui.UIScale.MEDIUM else (370, 60)
                     )
                 ),
-            )
+            ),
+            # We exist in the overlay stack so main-windows being
+            # recreated doesn't affect us.
+            prevent_main_window_auto_recreate=False,
         )
 
         self._cancel_button = bui.buttonwidget(
@@ -96,7 +99,7 @@ class PartyWindow(bui.Window):
         if info is not None and info.name != '':
             title = bui.Lstr(value=info.name)
         else:
-            title = bui.Lstr(resource=self._r + '.titleText')
+            title = bui.Lstr(resource=f'{self._r}.titleText')
 
         self._title_text = bui.textwidget(
             parent=self._root_widget,
@@ -112,9 +115,22 @@ class PartyWindow(bui.Window):
 
         self._empty_str = bui.textwidget(
             parent=self._root_widget,
-            scale=0.75,
+            scale=0.6,
             size=(0, 0),
-            position=(self._width * 0.5, self._height - 65),
+            # color=(0.5, 1.0, 0.5),
+            shadow=0.3,
+            position=(self._width * 0.5, self._height - 57),
+            maxwidth=self._width * 0.85,
+            h_align='center',
+            v_align='center',
+        )
+        self._empty_str_2 = bui.textwidget(
+            parent=self._root_widget,
+            scale=0.5,
+            size=(0, 0),
+            color=(0.5, 1.0, 0.5),
+            shadow=0.1,
+            position=(self._width * 0.5, self._height - 75),
             maxwidth=self._width * 0.85,
             h_align='center',
             v_align='center',
@@ -126,6 +142,7 @@ class PartyWindow(bui.Window):
             size=(self._scroll_width, self._height - 200),
             position=(30, 80),
             color=(0.4, 0.6, 0.3),
+            border_opacity=0.6,
         )
         self._columnwidget = bui.columnwidget(
             parent=self._scrollwidget, border=2, left_border=-200, margin=0
@@ -151,7 +168,7 @@ class PartyWindow(bui.Window):
             maxwidth=494,
             shadow=0.3,
             flatness=1.0,
-            description=bui.Lstr(resource=self._r + '.chatMessageText'),
+            description=bui.Lstr(resource=f'{self._r}.chatMessageText'),
             autoselect=True,
             v_align='center',
             corner_scale=0.7,
@@ -175,7 +192,7 @@ class PartyWindow(bui.Window):
         btn = bui.buttonwidget(
             parent=self._root_widget,
             size=(50, 35),
-            label=bui.Lstr(resource=self._r + '.sendText'),
+            label=bui.Lstr(resource=f'{self._r}.sendText'),
             button_type='square',
             autoselect=True,
             position=(self._width - 70, 35),
@@ -183,6 +200,7 @@ class PartyWindow(bui.Window):
         )
 
         bui.textwidget(edit=txt, on_return_press_call=btn.activate)
+        bui.widget(edit=txt, down_widget=btn)
         self._name_widgets: list[bui.Widget] = []
         self._roster: list[dict[str, Any]] | None = None
         self._update_timer = bui.AppTimer(
@@ -218,7 +236,14 @@ class PartyWindow(bui.Window):
 
     def _copy_msg(self, msg: str) -> None:
         if bui.clipboard_is_supported():
-            bui.clipboard_set_text(msg)
+            # Extract content after the first colon
+            if ':' in msg:
+                content = msg.split(':', 1)[1].strip()
+            else:
+                # Just a safe check
+                content = msg
+
+            bui.clipboard_set_text(content)
             bui.screenmessage(
                 bui.Lstr(resource='copyConfirmText'), color=(0, 1, 0)
             )
@@ -294,7 +319,11 @@ class PartyWindow(bui.Window):
                 top_section_height = 60
                 bui.textwidget(
                     edit=self._empty_str,
-                    text=bui.Lstr(resource=self._r + '.emptyText'),
+                    text=bui.Lstr(resource=f'{self._r}.emptyText'),
+                )
+                bui.textwidget(
+                    edit=self._empty_str_2,
+                    text=bui.Lstr(resource='gatherWindow.descriptionShortText'),
                 )
                 bui.scrollwidget(
                     edit=self._scrollwidget,
@@ -428,7 +457,7 @@ class PartyWindow(bui.Window):
                                         maxwidth=c_width * 0.96 - twd,
                                         color=(0.1, 1, 0.1, 0.5),
                                         text=bui.Lstr(
-                                            resource=self._r + '.hostText'
+                                            resource=f'{self._r}.hostText'
                                         ),
                                         scale=0.4,
                                         shadow=0.1,
@@ -436,6 +465,7 @@ class PartyWindow(bui.Window):
                                     )
                                 )
                 bui.textwidget(edit=self._empty_str, text='')
+                bui.textwidget(edit=self._empty_str_2, text='')
                 bui.scrollwidget(
                     edit=self._scrollwidget,
                     size=(

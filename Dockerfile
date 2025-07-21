@@ -1,16 +1,40 @@
-FROM ubuntu:22.04
+# Use lightweight Python Debian slim image for glibc compatibility
+FROM python:3.13-slim
 
-ENV TZ=Asia/Jakarta
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+# Install required system dependencies and create machine-id
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    dbus \
+    && rm -rf /var/lib/apt/lists/* \
+    && dbus-uuidgen > /etc/machine-id
 
-RUN apt update -y
-RUN apt install software-properties-common -y
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt update -y
-RUN apt install python3-pip -y
-RUN apt install python3.12-dev -y
+# Create non-root user for security
+RUN useradd --create-home --shell /bin/bash bombsquad
 
+# Set working directory
 WORKDIR /app
-COPY . /app
 
-CMD ["/app/bombsquad_server"]
+# Copy the entire bombsquad server directory
+COPY --chown=bombsquad:bombsquad . .
+
+# Make executables (Debian supports the original shebang)
+RUN chmod +x bombsquad_server dist/bombsquad_headless
+
+# Create data directory for logs and cache
+RUN mkdir -p data && chown bombsquad:bombsquad data
+
+# Switch to non-root user
+USER bombsquad
+
+# Expose the default BombSquad port
+EXPOSE 43210/udp
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV BA_ROOT=/app/data
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
+    CMD pgrep -f bombsquad_headless || exit 1
+
+# Run the server (original script handles Python flags)
+CMD ["./bombsquad_server"]

@@ -46,8 +46,6 @@ class Spaz(bs.Actor):
     """
     Base class for various Spazzes.
 
-    Category: **Gameplay Classes**
-
     A Spaz is the standard little humanoid character in the game.
     It can be controlled by a player or by AI, and can have
     various different appearances.  The name 'Spaz' is not to be
@@ -71,6 +69,7 @@ class Spaz(bs.Actor):
 
     def __init__(
         self,
+        *,
         color: Sequence[float] = (1.0, 1.0, 1.0),
         highlight: Sequence[float] = (0.5, 0.5, 0.5),
         character: str = 'Spaz',
@@ -885,7 +884,9 @@ class Spaz(bs.Actor):
             if not self.frozen:
                 self.frozen = True
                 self.node.frozen = True
-                bs.timer(5.0, bs.WeakCall(self.handlemessage, bs.ThawMessage()))
+                bs.timer(
+                    msg.time, bs.WeakCall(self.handlemessage, bs.ThawMessage())
+                )
                 # Instantly shatter if we're already dead.
                 # (otherwise its hard to tell we're dead).
                 if self.hitpoints <= 0:
@@ -1052,6 +1053,7 @@ class Spaz(bs.Actor):
                         '-' + str(int(damage / 10)) + '%',
                         msg.pos,
                         msg.force_direction,
+                        self._dead,
                     )
 
                 # Let's always add in a super-punch sound with boxing
@@ -1195,11 +1197,12 @@ class Spaz(bs.Actor):
                 if self.node:
                     self.node.delete()
             elif self.node:
-                self.node.hurt = 1.0
-                if self.play_big_death_sound and not wasdead:
-                    SpazFactory.get().single_player_death_sound.play()
-                self.node.dead = True
-                bs.timer(2.0, self.node.delete)
+                if not wasdead:
+                    self.node.hurt = 1.0
+                    if self.play_big_death_sound:
+                        SpazFactory.get().single_player_death_sound.play()
+                    self.node.dead = True
+                    bs.timer(2.0, self.node.delete)
 
         elif isinstance(msg, bs.OutOfBoundsMessage):
             # By default we just die here.
@@ -1324,11 +1327,16 @@ class Spaz(bs.Actor):
             ):
                 opposingbody = 1
 
-            # Special case - if we're holding a flag, don't replace it
+            # Special case #1 - if we're holding a flag, don't replace it
+            # Special case #2 - corpses should have lower priority
             # (hmm - should make this customizable or more low level).
             held = self.node.hold_node
-            if held and held.getnodetype() == 'flag':
-                return True
+            if held:
+                spaz = opposingnode.getdelegate(Spaz)
+                if held.getnodetype() == 'flag' or (
+                    spaz and not spaz.is_alive()
+                ):
+                    return True
 
             # Note: hold_body needs to be set before hold_node.
             self.node.hold_body = opposingbody

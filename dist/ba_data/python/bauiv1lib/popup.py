@@ -10,24 +10,28 @@ from typing import TYPE_CHECKING, override
 import bauiv1 as bui
 
 if TYPE_CHECKING:
-    from typing import Any, Sequence, Callable
+    from typing import Any, Sequence, Callable, Literal
 
 
 class PopupWindow:
-    """A transient window that positions and scales itself for visibility.
-
-    Category: UI Classes"""
+    """A transient window that pops up from some position."""
 
     def __init__(
         self,
         position: tuple[float, float],
         size: tuple[float, float],
         scale: float = 1.0,
+        *,
         offset: tuple[float, float] = (0, 0),
         bg_color: tuple[float, float, float] = (0.35, 0.55, 0.15),
         focus_position: tuple[float, float] = (0, 0),
         focus_size: tuple[float, float] | None = None,
-        toolbar_visibility: str = 'menu_minimal_no_back',
+        toolbar_visibility: Literal[
+            'inherit',
+            'menu_minimal_no_back',
+            'menu_store_no_back',
+        ] = 'menu_minimal_no_back',
+        edge_buffer_scale: float = 1.0,
     ):
         # pylint: disable=too-many-locals
         if focus_size is None:
@@ -45,7 +49,7 @@ class PopupWindow:
         # we now need to ensure that we're all onscreen by scaling down if
         # need be and clamping it to the UI bounds.
         bounds = bui.uibounds()
-        edge_buffer = 15
+        edge_buffer = 15 * edge_buffer_scale
         bounds_width = bounds[1] - bounds[0] - edge_buffer * 2
         bounds_height = bounds[3] - bounds[2] - edge_buffer * 2
 
@@ -79,6 +83,10 @@ class PopupWindow:
             (focus_position[1] + focus_size[1] * 0.5) - (size[1] * 0.5)
         ) * scale
 
+        # NOTE: We do NOT need to suppress main-window-recreates here
+        # (like regular windows do) since we are always in the overlay
+        # stack and thus aren't affected by main-window recreation.
+
         self.root_widget = bui.containerwidget(
             transition='in_scale',
             scale=scale,
@@ -111,6 +119,7 @@ class PopupMenuWindow(PopupWindow):
         position: tuple[float, float],
         choices: Sequence[str],
         current_choice: str,
+        *,
         delegate: Any = None,
         width: float = 230.0,
         maxwidth: float | None = None,
@@ -196,6 +205,7 @@ class PopupMenuWindow(PopupWindow):
                 highlight=False,
                 color=(0.35, 0.55, 0.15),
                 size=(self._width - 40, self._height - 40),
+                border_opacity=0.5,
             )
             self._columnwidget = bui.columnwidget(
                 parent=self._scrollwidget, border=2, margin=0
@@ -296,6 +306,7 @@ class PopupMenu:
         parent: bui.Widget,
         position: tuple[float, float],
         choices: Sequence[str],
+        *,
         current_choice: str | None = None,
         on_value_change_call: Callable[[str], Any] | None = None,
         opening_call: Callable[[], Any] | None = None,

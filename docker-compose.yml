@@ -1,7 +1,57 @@
-version: '3'
+version: '3.8'
 
 services:
-  bombsquad:
+  bombsquad-server:
     build: .
+    container_name: bombsquad-server
+    restart: unless-stopped
+    
+    # Network configuration
     ports:
-      - "43210:43210"
+      - "43210:43210/udp"
+    
+    # Environment variables for easy configuration
+    environment:
+      - PARTY_NAME=${PARTY_NAME:-BombSquad Server}
+      - PARTY_IS_PUBLIC=${PARTY_IS_PUBLIC:-true}
+      - AUTHENTICATE_CLIENTS=${AUTHENTICATE_CLIENTS:-true}
+      - MAX_PARTY_SIZE=${MAX_PARTY_SIZE:-6}
+      - SESSION_TYPE=${SESSION_TYPE:-ffa}
+    
+    # Volume mounts for persistence and configuration
+    volumes:
+      - ./config.docker.toml:/app/config.toml:ro
+      - bombsquad-data:/app/data
+      - bombsquad-logs:/app/logs
+    
+    # Resource limits to prevent resource hogging
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '1.0'
+        reservations:
+          memory: 128M
+          cpus: '0.5'
+    
+    # Health check
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "bombsquad_headless"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+# Named volumes for data persistence
+volumes:
+  bombsquad-data:
+    driver: local
+  bombsquad-logs:
+    driver: local

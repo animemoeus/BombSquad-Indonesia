@@ -251,9 +251,9 @@ def unavailable_message() -> None:
 
 
 def set_last_ad_network(sval: str) -> None:
-    if _babase.app.classic is not None:
-        _babase.app.classic.ads.last_ad_network = sval
-        _babase.app.classic.ads.last_ad_network_set_time = time.time()
+    if _babase.app.plus is not None:
+        _babase.app.plus.ads.last_ad_network = sval
+        _babase.app.plus.ads.last_ad_network_set_time = time.time()
 
 
 def google_play_purchases_not_available_message() -> None:
@@ -305,8 +305,8 @@ def ui_remote_press() -> None:
 
 
 def remove_in_game_ads_message() -> None:
-    if _babase.app.classic is not None:
-        _babase.app.classic.ads.do_remove_in_game_ads_message()
+    if _babase.app.plus is not None:
+        _babase.app.plus.ads.do_remove_in_game_ads_message()
 
 
 def do_quit() -> None:
@@ -430,3 +430,40 @@ def unsupported_controller_message(name: str) -> None:
         Lstr(resource='unsupportedControllerText', subs=[('${NAME}', name)]),
         color=(1, 0, 0),
     )
+
+
+def copy_dev_console_history() -> None:
+    """Copy log history from the dev console."""
+    import baenv
+    from babase._language import Lstr
+
+    if not _babase.clipboard_is_supported():
+        _babase.getsimplesound('error').play()
+        _babase.screenmessage(
+            'Clipboard not supported on this build.',
+            color=(1, 0, 0),
+        )
+        return
+
+    # This requires us to be running with a log-handler set up.
+    envconfig = baenv.get_env_config()
+    if envconfig.log_handler is None:
+        _babase.getsimplesound('error').play()
+        _babase.screenmessage(
+            'Not available; standard engine logging is not enabled.',
+            color=(1, 0, 0),
+        )
+        return
+
+    # Just dump everything that's in the log-handler's cache.
+    archive = envconfig.log_handler.get_cached()
+    lines: list[str] = []
+    stdnames = ('stdout', 'stderr')
+    for entry in archive.entries:
+        reltime = entry.time.timestamp() - envconfig.launch_time
+        level_ex = '' if entry.name in stdnames else f' {entry.level.name}'
+        lines.append(f'{reltime:.3f}{level_ex} {entry.name}: {entry.message}')
+
+    _babase.clipboard_set_text('\n'.join(lines))
+    _babase.screenmessage(Lstr(resource='copyConfirmText'), color=(0, 1, 0))
+    _babase.getsimplesound('gunCocking').play()

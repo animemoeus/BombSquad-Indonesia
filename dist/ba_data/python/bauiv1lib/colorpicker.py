@@ -12,6 +12,8 @@ import bauiv1 as bui
 if TYPE_CHECKING:
     from typing import Any, Sequence
 
+REQUIRE_PRO = False
+
 
 class ColorPicker(PopupWindow):
     """A popup UI to select from a set of colors.
@@ -23,6 +25,7 @@ class ColorPicker(PopupWindow):
         self,
         parent: bui.Widget,
         position: tuple[float, float],
+        *,
         initial_color: Sequence[float] = (1.0, 1.0, 1.0),
         delegate: Any = None,
         scale: float | None = None,
@@ -105,9 +108,8 @@ class ColorPicker(PopupWindow):
             on_activate_call=bui.WeakCall(self._select_other),
         )
 
-        # Custom colors are limited to pro currently.
         assert bui.app.classic is not None
-        if not bui.app.classic.accounts.have_pro():
+        if REQUIRE_PRO and not bui.app.classic.accounts.have_pro():
             bui.imagewidget(
                 parent=self.root_widget,
                 position=(50, 12),
@@ -137,7 +139,7 @@ class ColorPicker(PopupWindow):
 
         # Requires pro.
         assert bui.app.classic is not None
-        if not bui.app.classic.accounts.have_pro():
+        if REQUIRE_PRO and not bui.app.classic.accounts.have_pro():
             purchase.PurchaseWindow(items=['pro'])
             self._transition_out()
             return
@@ -183,6 +185,7 @@ class ColorPickerExact(PopupWindow):
         self,
         parent: bui.Widget,
         position: tuple[float, float],
+        *,
         initial_color: Sequence[float] = (1.0, 1.0, 1.0),
         delegate: Any = None,
         scale: float | None = None,
@@ -245,7 +248,6 @@ class ColorPickerExact(PopupWindow):
             editable=True,
             maxwidth=70,
             allow_clear_button=False,
-            force_internal_editing=True,
             glow_type='uniform',
         )
 
@@ -442,10 +444,10 @@ def color_to_hex(r: float, g: float, b: float, a: float | None = 1.0) -> str:
     """Converts an rgb1 tuple to a HEX color code.
 
     Args:
-        r (float): Red.
-        g (float): Green.
-        b (float): Blue.
-        a (float, optional): Alpha. Defaults to 1.0.
+        r: Red.
+        g: Green.
+        b: Blue.
+        a: Alpha. Defaults to 1.0.
 
     Returns:
         str: The hexified rgba values.
@@ -465,14 +467,14 @@ def color_to_hex(r: float, g: float, b: float, a: float | None = 1.0) -> str:
 
 def color_overlay_func(
     r: float, g: float, b: float, a: float | None = None
-) -> tuple:
+) -> tuple[float, ...]:
     """I could NOT come up with a better function name.
 
     Args:
-        r (float): Red.
-        g (float): Green.
-        b (float): Blue.
-        a (float | None, optional): Alpha. Defaults to None.
+        r: Red.
+        g: Green.
+        b: Blue.
+        a: Alpha. Defaults to None.
 
     Returns:
         tuple: A brighter color if the provided one is dark,

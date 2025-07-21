@@ -1,0 +1,58 @@
+# BombSquad Server Configuration for Docker
+# This is a Docker-optimized configuration file
+
+# Name of our server in the public parties list
+party_name = "Docker BombSquad Server"
+
+# Set to false by default for security - enable via environment variable
+party_is_public = false
+
+# Enable client authentication by default
+authenticate_clients = true
+
+# Default port - matches docker-compose port mapping
+port = 43210
+
+# Reasonable default party size
+max_party_size = 6
+
+# Default session type
+session_type = "ffa"
+
+# Enable default kick voting
+enable_default_kick_voting = true
+
+# Disable tutorial by default for faster gameplay
+show_tutorial = false
+
+# Auto-balance teams in team games
+auto_balance_teams = true
+
+# Series lengths
+teams_series_length = 7
+ffa_series_length = 24
+
+# Restart settings for Docker environment
+clean_exit_minutes = 60
+idle_exit_minutes = 20
+
+# Enable queue
+enable_queue = true
+
+# Player rejoin cooldown to prevent exploits
+player_rejoin_cooldown = 10.0
+
+# Use newer protocol version for better features
+protocol_version = 35
+
+# Don't write bytecode files to keep container clean
+dont_write_bytecode = true
+
+# Team configuration
+team_names = ["Red", "Blue"]
+team_colors = [[0.1, 0.25, 1.0], [1.0, 0.25, 0.2]]
+
+# Log levels for debugging
+[log_levels]
+"ba.lifecycle" = "INFO"
+"ba.assets" = "WARNING"

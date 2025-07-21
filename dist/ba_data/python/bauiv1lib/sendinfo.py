@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import time
 import logging
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, override
 
 import bauiv1 as bui
 
@@ -14,26 +14,23 @@ if TYPE_CHECKING:
     from typing import Any
 
 
-class SendInfoWindow(bui.Window):
+class SendInfoWindow(bui.MainWindow):
     """Window for sending info to the developer."""
 
     def __init__(
         self,
         modal: bool = False,
         legacy_code_mode: bool = False,
+        transition: str | None = 'in_scale',
         origin_widget: bui.Widget | None = None,
     ):
         self._legacy_code_mode = legacy_code_mode
 
-        scale_origin: tuple[float, float] | None
+        # Need to wrangle our own transition-out in modal mode.
         if origin_widget is not None:
             self._transition_out = 'out_scale'
-            scale_origin = origin_widget.get_screen_space_center()
-            transition = 'in_scale'
         else:
             self._transition_out = 'out_right'
-            scale_origin = None
-            transition = 'in_right'
 
         width = 450 if legacy_code_mode else 600
         height = 200 if legacy_code_mode else 300
@@ -46,15 +43,19 @@ class SendInfoWindow(bui.Window):
         super().__init__(
             root_widget=bui.containerwidget(
                 size=(width, height),
-                transition=transition,
-                toolbar_visibility='menu_minimal_no_back',
-                scale_origin_stack_offset=scale_origin,
+                toolbar_visibility=(
+                    'menu_minimal_no_back'
+                    if uiscale is bui.UIScale.SMALL or modal
+                    else 'menu_full'
+                ),
                 scale=(
                     2.0
                     if uiscale is bui.UIScale.SMALL
                     else 1.5 if uiscale is bui.UIScale.MEDIUM else 1.0
                 ),
-            )
+            ),
+            transition=transition,
+            origin_widget=origin_widget,
         )
 
         btn = bui.buttonwidget(
@@ -109,7 +110,7 @@ class SendInfoWindow(bui.Window):
             parent=self._root_widget,
             text=bui.Lstr(
                 resource=(
-                    self._r + '.codeText'
+                    f'{self._r}.codeText'
                     if legacy_code_mode
                     else 'descriptionText'
                 )
@@ -133,7 +134,7 @@ class SendInfoWindow(bui.Window):
             color=(0.9, 0.9, 0.9, 1.0),
             description=bui.Lstr(
                 resource=(
-                    self._r + '.codeText'
+                    f'{self._r}.codeText'
                     if legacy_code_mode
                     else 'descriptionText'
                 )
@@ -152,7 +153,7 @@ class SendInfoWindow(bui.Window):
             size=(b_width, 60),
             scale=1.0,
             label=bui.Lstr(
-                resource='submitText', fallback_resource=self._r + '.enterText'
+                resource='submitText', fallback_resource=f'{self._r}.enterText'
             ),
             on_activate_call=self._do_enter,
         )
@@ -163,9 +164,33 @@ class SendInfoWindow(bui.Window):
             selected_child=self._text_field,
         )
 
+    @override
+    def get_main_window_state(self) -> bui.MainWindowState:
+        # Support recreating our window for back/refresh purposes.
+        cls = type(self)
+
+        assert not self._modal
+
+        # Pull stuff out of self here; if we do it in the lambda we'll
+        # keep self alive which we don't want.
+        legacy_code_mode = self._legacy_code_mode
+
+        return bui.BasicMainWindowState(
+            create_call=lambda transition, origin_widget: cls(
+                legacy_code_mode=legacy_code_mode,
+                transition=transition,
+                origin_widget=origin_widget,
+            )
+        )
+
     def _do_back(self) -> None:
         # pylint: disable=cyclic-import
-        from bauiv1lib.settings.advanced import AdvancedSettingsWindow
+
+        if not self._modal:
+            self.main_window_back()
+            return
+
+        # Handle modal case:
 
         # no-op if our underlying widget is dead or on its way out.
         if not self._root_widget or self._root_widget.transitioning_out:
@@ -174,39 +199,32 @@ class SendInfoWindow(bui.Window):
         bui.containerwidget(
             edit=self._root_widget, transition=self._transition_out
         )
-        if not self._modal:
-            assert bui.app.classic is not None
-            bui.app.ui_v1.set_main_menu_window(
-                AdvancedSettingsWindow(transition='in_left').get_root_widget(),
-                from_window=self._root_widget,
-            )
 
     def _activate_enter_button(self) -> None:
         self._enter_button.activate()
 
     def _do_enter(self) -> None:
         # pylint: disable=cyclic-import
-        from bauiv1lib.settings.advanced import AdvancedSettingsWindow
+        # from bauiv1lib.settings.advanced import AdvancedSettingsWindow
 
         plus = bui.app.plus
         assert plus is not None
 
-        # no-op if our underlying widget is dead or on its way out.
-        if not self._root_widget or self._root_widget.transitioning_out:
-            return
-
-        bui.containerwidget(
-            edit=self._root_widget, transition=self._transition_out
-        )
-        if not self._modal:
-            assert bui.app.classic is not None
-            bui.app.ui_v1.set_main_menu_window(
-                AdvancedSettingsWindow(transition='in_left').get_root_widget(),
-                from_window=self._root_widget,
-            )
-
         description: Any = bui.textwidget(query=self._text_field)
         assert isinstance(description, str)
+
+        if self._modal:
+            # no-op if our underlying widget is dead or on its way out.
+            if not self._root_widget or self._root_widget.transitioning_out:
+                return
+            bui.containerwidget(
+                edit=self._root_widget, transition=self._transition_out
+            )
+        else:
+            # no-op if we're not in control.
+            if not self.main_window_has_control():
+                return
+            self.main_window_back()
 
         # Used for things like unlocking shared playlists or linking
         # accounts: talk directly to V1 server via transactions.

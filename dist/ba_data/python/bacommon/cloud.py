@@ -3,17 +3,44 @@
 """Functionality related to cloud functionality."""
 
 from __future__ import annotations
+
+from enum import Enum
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Annotated, override
-from enum import Enum
 
 from efro.message import Message, Response
 from efro.dataclassio import ioprepped, IOAttrs
+from bacommon.securedata import SecureDataChecker
 from bacommon.transfer import DirectoryManifest
 from bacommon.login import LoginType
 
 if TYPE_CHECKING:
     pass
+
+
+class WebLocation(Enum):
+    """Set of places we can be directed on ballistica.net."""
+
+    ACCOUNT_EDITOR = 'e'
+    ACCOUNT_DELETE_SECTION = 'd'
+
+
+@ioprepped
+@dataclass
+class CloudVals:
+    """Engine config values provided by the master server.
+
+    Used to convey things such as debug logging.
+    """
+
+    #: Fully qualified type names we should emit extra debug logs for
+    #: when garbage-collected (for debugging ref loops).
+    gc_debug_types: Annotated[
+        list[str], IOAttrs('gct', store_default=False)
+    ] = field(default_factory=list)
+
+    #: Max number of objects of a given type to emit debug logs for.
+    gc_debug_type_limit: Annotated[int, IOAttrs('gdl', store_default=False)] = 2
 
 
 @ioprepped
@@ -238,6 +265,10 @@ class SignInResponse(Response):
 class ManageAccountMessage(Message):
     """Message asking for a manage-account url."""
 
+    weblocation: Annotated[WebLocation, IOAttrs('l')] = (
+        WebLocation.ACCOUNT_EDITOR
+    )
+
     @override
     @classmethod
     def get_response_types(cls) -> list[type[Response] | None]:
@@ -250,3 +281,102 @@ class ManageAccountResponse(Response):
     """Here's that sign-in result you asked for, boss."""
 
     url: Annotated[str | None, IOAttrs('u')]
+
+
+@ioprepped
+@dataclass
+class StoreQueryMessage(Message):
+    """Message asking about purchasable stuff and store related state."""
+
+    @override
+    @classmethod
+    def get_response_types(cls) -> list[type[Response] | None]:
+        return [StoreQueryResponse]
+
+
+@ioprepped
+@dataclass
+class StoreQueryResponse(Response):
+    """Here's that store info you asked for, boss."""
+
+    class Result(Enum):
+        """Our overall result."""
+
+        SUCCESS = 's'
+        ERROR = 'e'
+
+    @dataclass
+    class Purchase:
+        """Info about a purchasable thing."""
+
+        purchaseid: Annotated[str, IOAttrs('id')]
+
+    # Overall result; all data is undefined if not SUCCESS.
+    result: Annotated[Result, IOAttrs('r')]
+
+    tokens: Annotated[int, IOAttrs('t')]
+    gold_pass: Annotated[bool, IOAttrs('g')]
+
+    available_purchases: Annotated[list[Purchase], IOAttrs('p')]
+    token_info_url: Annotated[str, IOAttrs('tiu')]
+
+
+@ioprepped
+@dataclass
+class SecureDataCheckMessage(Message):
+    """Was this data signed by the master-server?."""
+
+    data: Annotated[bytes, IOAttrs('d')]
+    signature: Annotated[bytes, IOAttrs('s')]
+
+    @override
+    @classmethod
+    def get_response_types(cls) -> list[type[Response] | None]:
+        return [SecureDataCheckResponse]
+
+
+@ioprepped
+@dataclass
+class SecureDataCheckResponse(Response):
+    """Here's the result of that data check, boss."""
+
+    # Whether the data signature was valid.
+    result: Annotated[bool, IOAttrs('v')]
+
+
+@ioprepped
+@dataclass
+class SecureDataCheckerRequest(Message):
+    """Can I get a checker over here?."""
+
+    @override
+    @classmethod
+    def get_response_types(cls) -> list[type[Response] | None]:
+        return [SecureDataCheckerResponse]
+
+
+@ioprepped
+@dataclass
+class SecureDataCheckerResponse(Response):
+    """Here's that checker ya asked for, boss."""
+
+    checker: Annotated[SecureDataChecker, IOAttrs('c')]
+
+
+@ioprepped
+@dataclass
+class CloudValsRequest(Message):
+    """Can a fella get some cloud vals around here?."""
+
+    @override
+    @classmethod
+    def get_response_types(cls) -> list[type[Response] | None]:
+        return [CloudValsResponse]
+
+
+@ioprepped
+@dataclass
+class CloudValsResponse(Response):
+    """Here's them cloud vals ya asked for, boss."""
+
+    vals: Annotated[CloudVals, IOAttrs('v')]

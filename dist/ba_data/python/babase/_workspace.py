@@ -9,9 +9,9 @@ import sys
 import logging
 from pathlib import Path
 from threading import Thread
+from functools import partial
 from typing import TYPE_CHECKING
 
-from efro.call import tpartial
 from efro.error import CleanError
 import _babase
 import bacommon.cloud
@@ -26,9 +26,9 @@ if TYPE_CHECKING:
 class WorkspaceSubsystem:
     """Subsystem for workspace handling in the app.
 
-    Category: **App Classes**
-
-    Access the single shared instance of this class at `ba.app.workspaces`.
+    Access the single shared instance of this class via the
+    :attr:`~babase.App.workspaces` attr on the :class:`~babase.App`
+    class.
     """
 
     def __init__(self) -> None:
@@ -41,7 +41,10 @@ class WorkspaceSubsystem:
         workspacename: str,
         on_completed: Callable[[], None],
     ) -> None:
-        """(internal)"""
+        """(internal)
+
+        :meta private:
+        """
 
         # Do our work in a background thread so we don't destroy
         # interactivity.
@@ -51,8 +54,7 @@ class WorkspaceSubsystem:
                 workspaceid=workspaceid,
                 workspacename=workspacename,
                 on_completed=on_completed,
-            ),
-            daemon=True,
+            )
         ).start()
 
     def _errmsg(self, msg: babase.Lstr) -> None:
@@ -70,6 +72,7 @@ class WorkspaceSubsystem:
         workspacename: str,
         on_completed: Callable[[], None],
     ) -> None:
+        # pylint: disable=too-many-locals
         from babase._language import Lstr
 
         class _SkipSyncError(RuntimeError):
@@ -80,22 +83,32 @@ class WorkspaceSubsystem:
 
         set_path = True
         wspath = Path(
-            _babase.get_volatile_data_directory(), 'workspaces', workspaceid
+            _babase.app.env.cache_directory, 'workspaces', workspaceid
         )
         try:
-            # If it seems we're offline, don't even attempt a sync,
-            # but allow using the previous synced state.
-            # (is this a good idea?)
+            # If it seems we're offline, don't even attempt a sync, but
+            # allow using the previous synced state. (is this a good
+            # idea?)
             if not plus.cloud.is_connected():
                 raise _SkipSyncError()
 
             manifest = DirectoryManifest.create_from_disk(wspath)
 
-            # FIXME: Should implement a way to pass account credentials in
-            # from the logic thread.
+            # FIXME: Should implement a way to pass account credentials
+            # in from the logic thread.
             state = bacommon.cloud.WorkspaceFetchState(manifest=manifest)
 
             while True:
+
+                # Abort if the app is shutting down.
+                appstate = _babase.app.state
+                appstate_t = type(appstate)
+                if (
+                    appstate is appstate_t.SHUTTING_DOWN
+                    or appstate is appstate_t.SHUTDOWN_COMPLETE
+                ):
+                    break
+
                 with account:
                     response = plus.cloud.send_message(
                         bacommon.cloud.WorkspaceFetchMessage(
@@ -118,7 +131,7 @@ class WorkspaceSubsystem:
                 state.iteration += 1
 
             _babase.pushcall(
-                tpartial(
+                partial(
                     self._successmsg,
                     Lstr(
                         resource='activatedText',
@@ -130,7 +143,7 @@ class WorkspaceSubsystem:
 
         except _SkipSyncError:
             _babase.pushcall(
-                tpartial(
+                partial(
                     self._errmsg,
                     Lstr(
                         resource='workspaceSyncReuseText',
@@ -141,11 +154,11 @@ class WorkspaceSubsystem:
             )
 
         except CleanError as exc:
-            # Avoid reusing existing if we fail in the middle; could
-            # be in wonky state.
+            # Avoid reusing existing if we fail in the middle; could be
+            # in wonky state.
             set_path = False
             _babase.pushcall(
-                tpartial(self._errmsg, Lstr(value=str(exc))),
+                partial(self._errmsg, Lstr(value=str(exc))),
                 from_other_thread=True,
             )
         except Exception:
@@ -153,7 +166,7 @@ class WorkspaceSubsystem:
             set_path = False
             logging.exception("Error syncing workspace '%s'.", workspacename)
             _babase.pushcall(
-                tpartial(
+                partial(
                     self._errmsg,
                     Lstr(
                         resource='workspaceSyncErrorText',
@@ -164,8 +177,8 @@ class WorkspaceSubsystem:
             )
 
         if set_path and wspath.is_dir():
-            # Add to Python paths and also to list of stuff to be scanned
-            # for meta tags.
+            # Add to Python paths and also to list of stuff to be
+            # scanned for meta tags.
             sys.path.insert(0, str(wspath))
             _babase.app.meta.extra_scan_dirs.append(str(wspath))
 
@@ -188,9 +201,10 @@ class WorkspaceSubsystem:
         """Handle inline file data to be saved to the client."""
         for fname, fdata in downloads_inline.items():
             fname = os.path.join(workspace_dir, fname)
-            # If there's a directory where we want our file to go, clear it
-            # out first. File deletes should have run before this so
-            # everything under it should be empty and thus killable via rmdir.
+            # If there's a directory where we want our file to go, clear
+            # it out first. File deletes should have run before this so
+            # everything under it should be empty and thus killable via
+            # rmdir.
             if os.path.isdir(fname):
                 for basename, dirnames, _fn in os.walk(fname, topdown=False):
                     for dirname in dirnames:
@@ -205,7 +219,8 @@ class WorkspaceSubsystem:
 
     def _handle_dir_prune_empty(self, prunedir: str) -> None:
         """Handle pruning empty directories."""
-        # Walk the tree bottom-up so we can properly kill recursive empty dirs.
+        # Walk the tree bottom-up so we can properly kill recursive
+        # empty dirs.
         for basename, dirnames, filenames in os.walk(prunedir, topdown=False):
             # It seems that child dirs we kill during the walk are still
             # listed when the parent dir is visited, so lets make sure
