@@ -5,7 +5,7 @@
 # Yes this is a long one..
 # pylint: disable=too-many-lines
 
-# ba_meta require api 8
+# ba_meta require api 9
 # (see https://ballistica.net/wiki/meta-tag-system)
 
 from __future__ import annotations
@@ -225,6 +225,8 @@ class OnslaughtGame(bs.CoopGameActivity[Player, Team]):
 
     @override
     def on_transition_in(self) -> None:
+        # (Pylint Bug?) pylint: disable=missing-function-docstring
+
         super().on_transition_in()
         customdata = bs.getsession().customdata
 
@@ -625,9 +627,12 @@ class OnslaughtGame(bs.CoopGameActivity[Player, Team]):
             ]
 
         elif self._preset in {Preset.UBER, Preset.UBER_EASY}:
-            # Show controls help in demo or arcade modes.
-            env = bs.app.env
-            if env.demo or env.arcade:
+            # Show controls help in demo or arcade variants.
+            variant = bs.app.env.variant
+            vart = type(variant)
+            arcade_or_demo = variant is vart.ARCADE or variant is vart.DEMO
+
+            if arcade_or_demo:
                 ControlsGuide(
                     delay=3.0, lifespan=10.0, bright=True
                 ).autoretain()
@@ -805,6 +810,7 @@ class OnslaughtGame(bs.CoopGameActivity[Player, Team]):
         max_level: int,
     ) -> list[list[tuple[int, int]]]:
         """Calculate a distribution of bad guys given some params."""
+        # pylint: disable=too-many-positional-arguments
         max_iterations = 10 + max_dudes * 2
 
         groups: list[list[tuple[int, int]]] = []
@@ -1194,7 +1200,7 @@ class OnslaughtGame(bs.CoopGameActivity[Player, Team]):
 
     def _respawn_players_for_wave(self) -> None:
         # Respawn applicable players.
-        if self._wavenum > 1 and not self.is_waiting_for_continue():
+        if self._wavenum > 1:
             for player in self.players:
                 if (
                     not player.is_alive()
@@ -1521,6 +1527,8 @@ class OnslaughtGame(bs.CoopGameActivity[Player, Team]):
 
     @override
     def handlemessage(self, msg: Any) -> Any:
+        # (Pylint Bug?) pylint: disable=missing-function-docstring
+
         if isinstance(msg, PlayerSpazHurtMessage):
             msg.spaz.getplayer(Player, True).has_been_hurt = True
             self._a_player_has_been_hurt = True
@@ -1634,6 +1642,8 @@ class OnslaughtGame(bs.CoopGameActivity[Player, Team]):
 
     @override
     def end_game(self) -> None:
+        # (Pylint Bug?) pylint: disable=missing-function-docstring
+
         # Tell our bots to celebrate just to rub it in.
         assert self._bots is not None
         self._bots.final_celebrate()
@@ -1641,19 +1651,9 @@ class OnslaughtGame(bs.CoopGameActivity[Player, Team]):
         self.do_end('defeat', delay=2.0)
         bs.setmusic(None)
 
-    @override
-    def on_continue(self) -> None:
-        for player in self.players:
-            if not player.is_alive():
-                self.spawn_player(player)
-
     def _checkroundover(self) -> None:
         """Potentially end the round based on the state of the game."""
         if self.has_ended():
             return
         if not any(player.is_alive() for player in self.teams[0].players):
-            # Allow continuing after wave 1.
-            if self._wavenum > 1:
-                self.continue_or_end_game()
-            else:
-                self.end_game()
+            self.end_game()

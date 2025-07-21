@@ -10,9 +10,8 @@ import babase
 import _bascenev1
 from bascenev1._activity import Activity
 
-# False-positive from pylint due to our class-generics-filter.
-from bascenev1._player import EmptyPlayer  # pylint: disable=W0611
-from bascenev1._team import EmptyTeam  # pylint: disable=W0611
+from bascenev1._player import EmptyPlayer
+from bascenev1._team import EmptyTeam
 from bascenev1._music import MusicType, setmusic
 
 
@@ -44,16 +43,22 @@ class EndSessionActivity(Activity[EmptyPlayer, EmptyTeam]):
     def on_begin(self) -> None:
         # pylint: disable=cyclic-import
 
-        assert babase.app.classic is not None
+        classic = babase.app.classic
+        plus = babase.app.plus
+        assert classic is not None
+        assert plus is not None
 
-        main_menu_session = babase.app.classic.get_main_menu_session()
+        main_menu_session = classic.get_main_menu_session()
 
         super().on_begin()
         babase.unlock_all_input()
-        assert babase.app.classic is not None
-        babase.app.classic.ads.call_after_ad(
-            babase.Call(_bascenev1.new_host_session, main_menu_session)
-        )
+        assert babase.app.plus is not None
+
+        call = babase.Call(_bascenev1.new_host_session, main_menu_session)
+        if classic.can_show_interstitial():
+            plus.ads.call_after_ad(call)
+        else:
+            babase.pushcall(call)
 
 
 class JoinActivity(Activity[EmptyPlayer, EmptyTeam]):

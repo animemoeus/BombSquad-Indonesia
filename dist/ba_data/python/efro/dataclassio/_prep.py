@@ -15,11 +15,11 @@ import dataclasses
 import typing
 import types
 import datetime
-from typing import TYPE_CHECKING, TypeVar, get_type_hints
+from typing import TYPE_CHECKING, get_type_hints
 
 # noinspection PyProtectedMember
 from efro.dataclassio._base import (
-    _parse_annotated,
+    parse_annotated,
     _get_origin,
     SIMPLE_TYPES,
     IOMultiType,
@@ -29,10 +29,11 @@ if TYPE_CHECKING:
     from typing import Any
     from efro.dataclassio._base import IOAttrs
 
-T = TypeVar('T')
+# Use a single logger for all dataclassio stuff.
+logger = logging.getLogger('efro.dataclassio')
 
-# How deep we go when prepping nested types
-# (basically for detecting recursive types)
+# How deep we go when prepping nested types (basically for detecting
+# recursive types)
 MAX_RECURSION = 10
 
 # Attr name for data we store on dataclass types that have been prepped.
@@ -68,7 +69,7 @@ def ioprep(cls: type, globalns: dict | None = None) -> None:
     )
 
 
-def ioprepped(cls: type[T]) -> type[T]:
+def ioprepped[T](cls: type[T]) -> type[T]:
     """Class decorator for easily prepping a dataclass at definition time.
 
     Note that in some cases it may not be possible to prep a dataclass
@@ -81,19 +82,20 @@ def ioprepped(cls: type[T]) -> type[T]:
     return cls
 
 
-def will_ioprep(cls: type[T]) -> type[T]:
+def will_ioprep[T](cls: type[T]) -> type[T]:
     """Class decorator hinting that we will prep a class later.
 
     In some cases (such as recursive types) we cannot use the @ioprepped
     decorator and must instead call ioprep() explicitly later. However,
     some of our custom pylint checking behaves differently when the
-    @ioprepped decorator is present, in that case requiring type annotations
-    to be present and not simply forward declared under an "if TYPE_CHECKING"
-    block. (since they are used at runtime).
+    @ioprepped decorator is present, in that case requiring type
+    annotations to be present and not simply forward declared under an
+    "if TYPE_CHECKING" block. (since they are used at runtime).
 
     The @will_ioprep decorator triggers the same pylint behavior
-    differences as @ioprepped (which are necessary for the later ioprep() call
-    to work correctly) but without actually running any prep itself.
+    differences as @ioprepped (which are necessary for the later
+    ioprep() call to work correctly) but without actually running any
+    prep itself.
     """
     return cls
 
@@ -171,8 +173,8 @@ class PrepSession:
         # happen explicitly at runtime so errors can be detected early
         # on.
         if not self.explicit:
-            logging.warning(
-                'efro.dataclassio: implicitly prepping dataclass: %s.'
+            logger.warning(
+                'Implicitly prepping dataclass: %s.'
                 ' It is highly recommended to explicitly prep dataclasses'
                 ' as soon as possible after definition (via'
                 ' efro.dataclassio.ioprep() or the'
@@ -185,7 +187,7 @@ class PrepSession:
             # which allows us to pick up nested classes, etc.
             resolved_annotations = get_type_hints(
                 cls,
-                localns=vars(cls),  # type: ignore[arg-type]
+                localns=vars(cls),
                 globalns=self.globalns,
                 include_extras=True,
             )
@@ -209,7 +211,7 @@ class PrepSession:
         # recurse through them, verifying that we support all contained
         # types and prepping any contained dataclass types.
         for attrname, anntype in resolved_annotations.items():
-            anntype, ioattrs = _parse_annotated(anntype)
+            anntype, ioattrs = parse_annotated(anntype)
 
             # If we found attached IOAttrs data, make sure it contains
             # valid values for the field it is attached to.
@@ -261,6 +263,7 @@ class PrepSession:
         recursion_level: int,
     ) -> None:
         """Run prep on a dataclass."""
+        # pylint: disable=too-many-positional-arguments
         # pylint: disable=too-many-return-statements
         # pylint: disable=too-many-branches
         # pylint: disable=too-many-statements
@@ -361,7 +364,7 @@ class PrepSession:
                 pass
             elif issubclass(childtypes[0], Enum):
                 # Allow our usual str or int enum types as keys.
-                self.prep_enum(childtypes[0])
+                self.prep_enum(childtypes[0], ioattrs=None)
             else:
                 raise TypeError(
                     f'Dict key type {childtypes[0]} for \'{attrname}\''
@@ -411,7 +414,7 @@ class PrepSession:
             return
 
         if issubclass(origin, Enum):
-            self.prep_enum(origin)
+            self.prep_enum(origin, ioattrs=ioattrs)
             return
 
         # We allow datetime objects (and google's extended subclass of
@@ -461,7 +464,11 @@ class PrepSession:
                 recursion_level=recursion_level + 1,
             )
 
-    def prep_enum(self, enumtype: type[Enum]) -> None:
+    def prep_enum(
+        self,
+        enumtype: type[Enum],
+        ioattrs: IOAttrs | None,
+    ) -> None:
         """Run prep on an enum type."""
 
         valtype: Any = None
@@ -483,4 +490,14 @@ class PrepSession:
                         f'Enum type {enumtype} has multiple'
                         f' value types; dataclassio requires'
                         f' them to be uniform.'
+                    )
+
+        if ioattrs is not None:
+            # If they provided a fallback enum value, make sure it
+            # is the correct type.
+            if ioattrs.enum_fallback is not None:
+                if type(ioattrs.enum_fallback) is not enumtype:
+                    raise TypeError(
+                        f'enum_fallback {ioattrs.enum_fallback} does not'
+                        f' match the field type ({enumtype}.'
                     )

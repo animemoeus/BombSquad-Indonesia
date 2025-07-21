@@ -1,4 +1,4 @@
-#!/usr/bin/env -S python3.12 -O
+#!/usr/bin/env -S python3.13 -OB
 # Released under the MIT License. See LICENSE for details.
 #
 # pylint: disable=too-many-lines
@@ -11,6 +11,7 @@ import time
 import json
 import signal
 import tomllib
+import logging
 import subprocess
 from pathlib import Path
 from threading import Lock, Thread, current_thread
@@ -33,9 +34,29 @@ if TYPE_CHECKING:
     from types import FrameType
     from bacommon.servermanager import ServerCommand
 
-VERSION_STR = '1.3.2'
+VERSION_STR = '1.3.5'
 
 # Version history:
+#
+# 1.3.5
+#
+#  - Minor updates accounting for the fact that the game binary no longer
+#    bundles .pyc files but rather generates them itself in a dedicated
+#    directory. So we now run this wrapper with bytecode disabled (-B)
+#    to keep the source tree tidy; the wrapper isn't performance sensitive
+#    so this should have no impact on performance.
+#
+# 1.3.4
+#
+#  - Updated to use Python 3.13.
+#
+# 1.3.3
+#
+#  - Added log_levels dict in server config for setting levels on
+#    individual loggers within the server binary. Can be useful for
+#    debugging issues or just keeping better track of what the server is
+#    up to. Check the logging tab in the dev console in the graphical
+#    client to learn which loggers are available.
 #
 # 1.3.2
 #
@@ -697,6 +718,14 @@ class ServerManagerApp:
         # instead?
         os.environ['BA_SERVER_WRAPPER_MANAGED'] = '1'
 
+        # Set particular things that can *only* be passed as args and
+        # not config vals (because they need to be handled by the binary
+        # before spinning up Python or whatnot).
+        extra_args: list[str] = []
+
+        if self._config.dont_write_bytecode:
+            extra_args += ['--dont-write-bytecode']
+
         # Set an environment var to change the device name. Device name
         # is used while making connection with master server,
         # cloud-console recognize us with this name.
@@ -714,7 +743,7 @@ class ServerManagerApp:
         # Launch!
         try:
             self._subprocess = subprocess.Popen(
-                [binary_name, '--config-dir', self._ba_root_path],
+                [binary_name, '--config-dir', self._ba_root_path] + extra_args,
                 stdin=subprocess.PIPE,
                 cwd='dist',
             )
@@ -793,23 +822,46 @@ class ServerManagerApp:
 
         # Some of our config values translate directly into the
         # bombsquad config file; the rest we pass at runtime.
+
+        # IMPORTANT: Make sure we *ALWAYS* push values (or lack thereof)
+        # through; otherwise stale values from previous runs can linger
+        # in the bincfg.
+
         bincfg['Port'] = self._config.port
         bincfg['Auto Balance Teams'] = self._config.auto_balance_teams
         bincfg['Show Tutorial'] = self._config.show_tutorial
 
+        binkey = 'SceneV1 Host Protocol'
         if self._config.protocol_version is not None:
-            bincfg['SceneV1 Host Protocol'] = self._config.protocol_version
-        if self._config.team_names is not None:
-            bincfg['Custom Team Names'] = self._config.team_names
-        elif 'Custom Team Names' in bincfg:
-            del bincfg['Custom Team Names']
+            bincfg[binkey] = self._config.protocol_version
+        elif binkey in bincfg:
+            del bincfg[binkey]
 
+        binkey = 'Custom Team Names'
+        if self._config.team_names is not None:
+            bincfg[binkey] = self._config.team_names
+        elif binkey in bincfg:
+            del bincfg[binkey]
+
+        binkey = 'Custom Team Colors'
         if self._config.team_colors is not None:
-            bincfg['Custom Team Colors'] = self._config.team_colors
-        elif 'Custom Team Colors' in bincfg:
-            del bincfg['Custom Team Colors']
+            bincfg[binkey] = self._config.team_colors
+        elif binkey in bincfg:
+            del bincfg[binkey]
 
         bincfg['Idle Exit Minutes'] = self._config.idle_exit_minutes
+
+        binkey = 'Log Levels'
+        if self._config.log_levels is not None:
+            # Users supply us log level names like NOTSET; convert those
+            # to numeric vals which the engine expects.
+            bincfg[binkey] = {
+                key: logging.getLevelName(val)
+                for key, val in self._config.log_levels.items()
+            }
+        elif binkey in bincfg:
+            del bincfg[binkey]
+
         with open(cfgpath, 'w', encoding='utf-8') as outfile:
             outfile.write(json.dumps(bincfg))
 

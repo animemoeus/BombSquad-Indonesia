@@ -5,11 +5,7 @@ from enum import Enum
 
 
 class InputType(Enum):
-    """Types of input a controller can send to the game.
-
-    Category: Enums
-
-    """
+    """Types of input a controller can send to the game."""
 
     UP_DOWN = 2
     LEFT_RIGHT = 3
@@ -39,19 +35,18 @@ class InputType(Enum):
 
 
 class QuitType(Enum):
-    """Types of input a controller can send to the game.
-
-    Category: Enums
+    """Types of quit behavior that can be requested from the app.
 
     'soft' may hide/reset the app but keep the process running, depending
-       on the platform.
+       on the platform (generally a thing on mobile).
 
     'back' is a variant of 'soft' which may give 'back-button-pressed'
        behavior depending on the platform. (returning to some previous
        activity instead of dumping to the home screen, etc.)
 
     'hard' leads to the process exiting. This generally should be avoided
-       on platforms such as mobile.
+       on platforms such as mobile where apps are expected to keep running
+       until killed by the OS.
     """
 
     SOFT = 0
@@ -64,8 +59,6 @@ class UIScale(Enum):
     independent of pixel resolution. For example, a phone and a desktop PC
     might render the game at similar pixel resolutions but the size they
     display content at will vary significantly.
-
-    Category: Enums
 
     'large' is used for devices such as desktop PCs where fine details can
        be clearly seen. UI elements are generally smaller on the screen
@@ -80,25 +73,19 @@ class UIScale(Enum):
        readable from an average distance.
     """
 
-    LARGE = 0
+    SMALL = 0
     MEDIUM = 1
-    SMALL = 2
+    LARGE = 2
 
 
 class Permission(Enum):
-    """Permissions that can be requested from the OS.
-
-    Category: Enums
-    """
+    """Permissions that can be requested from the OS."""
 
     STORAGE = 0
 
 
 class SpecialChar(Enum):
-    """Special characters the game can print.
-
-    Category: Enums
-    """
+    """Special characters the game can print."""
 
     DOWN_ARROW = 0
     UP_ARROW = 1
@@ -126,7 +113,7 @@ class SpecialChar(Enum):
     OUYA_BUTTON_U = 23
     OUYA_BUTTON_Y = 24
     OUYA_BUTTON_A = 25
-    OUYA_LOGO = 26
+    TOKEN = 26
     LOGO = 27
     TICKET = 28
     GOOGLE_PLAY_GAMES_LOGO = 29

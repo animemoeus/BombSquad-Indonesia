@@ -9,6 +9,7 @@ import errno
 if TYPE_CHECKING:
     from typing import Any
 
+    import urllib3.response
     from efro.terminal import ClrBase
 
 
@@ -103,6 +104,107 @@ class AuthenticationError(Exception):
     client-supplied credentials, if an invalid password is supplied
     for a sign-in attempt, etc.
     """
+
+
+class Urllib3HttpError(Exception):
+    """Exception raised for non-200 html codes by
+    :func:`raise_for_urllib3_status()`.
+    """
+
+    def __init__(self, code: int) -> None:
+        self.code = code
+
+    # So we can see code in tracebacks.
+    @override
+    def __str__(self) -> str:
+        from http import HTTPStatus
+
+        try:
+            desc = HTTPStatus(self.code).description
+        except ValueError:
+            desc = 'Unknown HTTP Status Code'
+        return f'{self.code}: {desc}'
+
+
+def raise_for_urllib3_status(
+    response: urllib3.response.BaseHTTPResponse,
+) -> None:
+    """Raise an exception for html error codes aside from 200."""
+    if response.status != 200:
+        raise Urllib3HttpError(code=response.status)
+
+
+def is_urllib3_communication_error(exc: BaseException, url: str | None) -> bool:
+    """Is the provided exception from urllib3 a communication-related error?
+
+    Url, if provided, can provide extra context for when to treat an error
+    as such an error.
+
+    This should be passed an exception which resulted from making
+    requests with urllib3. It returns True for any errors that could
+    conceivably arise due to unavailable/poor network connections,
+    firewall/connectivity issues, or other issues out of our control.
+    These errors can often be safely ignored or presented to the user as
+    general 'network-unavailable' states.
+    """
+    # pylint: disable=too-many-return-statements
+
+    # Need to start building these up. For now treat everything as a
+    # real error.
+    import urllib3.exceptions
+
+    # If this error is from hitting max-retries, look at the underlying
+    # error instead.
+    if isinstance(exc, urllib3.exceptions.MaxRetryError):
+        # Hmm; will a max-retry error ever not have an underlying error?
+        if exc.reason is None:
+            return False
+        exc = exc.reason
+
+    if isinstance(exc, Urllib3HttpError):
+        # Special sub-case: appspot.com hosting seems to give 403 errors
+        # (forbidden) to some countries (presumably blocked by
+        # governments or whatnot). Let's consider that a communication
+        # error since its out of our control so we don't fill up logs
+        # with it.
+        if exc.code == 403 and url is not None and '.appspot.com' in url:
+            return True
+
+        # Another special case; we tend to get the occasional flukish
+        # gateway error when sending between our servers; treat those as
+        # comm-errors.
+        if exc.code == 502 and url is not None and 'ballistica.net' in url:
+            return True
+
+    elif isinstance(
+        exc,
+        (
+            urllib3.exceptions.ConnectTimeoutError,
+            urllib3.exceptions.ReadTimeoutError,
+            urllib3.exceptions.NewConnectionError,
+            urllib3.exceptions.SSLError,
+        ),
+    ):
+        return True
+
+    elif isinstance(exc, urllib3.exceptions.NameResolutionError):
+        # Technically could be a sign of an error on our end, but most
+        # people running into this will be due to wonky dns on their end,
+        # so treating it as a comm error.
+        return True
+
+    elif isinstance(exc, urllib3.exceptions.ProtocolError):
+        # Most protocol errors quality as CommunicationErrors, but some
+        # may be due to server misconfigurations or whatnot so let's
+        # take it on a case by case basis.
+        excstr = str(exc)
+        if (
+            'Connection aborted.' in excstr
+            or 'Software caused connection abort' in excstr
+        ):
+            return True
+
+    return False
 
 
 def is_urllib_communication_error(exc: BaseException, url: str | None) -> bool:
@@ -249,6 +351,11 @@ def is_asyncio_streams_communication_error(exc: BaseException) -> bool:
         # Assuming this just means client is attempting to connect from some
         # outdated browser or whatnot.
         if 'SSL: WRONG_VERSION_NUMBER' in excstr:
+            return True
+
+        # Also getting this sometimes which sounds like corrupt SSL data
+        # or something.
+        if 'SSL: BAD_RECORD_TYPE' in excstr:
             return True
 
         # And seeing this very rarely; assuming its just data corruption?

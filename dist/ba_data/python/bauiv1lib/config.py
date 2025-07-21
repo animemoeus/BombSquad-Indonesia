@@ -28,6 +28,7 @@ class ConfigCheckBox:
         configkey: str,
         position: tuple[float, float],
         size: tuple[float, float],
+        *,
         displayname: str | bui.Lstr | None = None,
         scale: float | None = None,
         maxwidth: float | None = None,
@@ -85,6 +86,7 @@ class ConfigNumberEdit:
         parent: bui.Widget,
         configkey: str,
         position: tuple[float, float],
+        *,
         minval: float = 0.0,
         maxval: float = 100.0,
         increment: float = 1.0,
@@ -107,7 +109,7 @@ class ConfigNumberEdit:
         self._callback = callback
         try:
             self._value = bui.app.config.resolve(configkey)
-        except ValueError:
+        except KeyError:
             self._value = bui.app.config.get(configkey, fallback_value)
         self._value = (
             self._minval
@@ -119,10 +121,10 @@ class ConfigNumberEdit:
 
         self.nametext = bui.textwidget(
             parent=parent,
-            position=position,
-            size=(100, 30),
+            position=(position[0], position[1] + 12.0),
+            size=(0, 0),
             text=displayname,
-            # maxwidth=160 + xoffset,
+            maxwidth=150 + xoffset,
             color=(0.8, 0.8, 0.8, 1.0),
             h_align='left',
             v_align='center',
@@ -130,8 +132,8 @@ class ConfigNumberEdit:
         )
         self.valuetext = bui.textwidget(
             parent=parent,
-            position=(position[0] + 146 + xoffset, position[1]),
-            size=(60, 28),
+            position=(position[0] + 216 + xoffset, position[1] + 12.0),
+            size=(0, 0),
             editable=False,
             color=(0.3, 1.0, 0.3, 1.0),
             h_align='right',
