@@ -1,0 +1,66 @@
+# Docker Compose configuration for LOCAL DEVELOPMENT
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+# Features:
+# - Auto-reload on code changes
+# - All directories mounted as volumes for live editing
+# - Development tools included
+# - Verbose logging
+
+services:
+  bombsquad-server:
+    # Override build to use development Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile.dev  # Development Dockerfile with auto-reload tools
+
+    # Override container name for development
+    container_name: bombsquad-server-dev
+
+    # Override volumes - mount everything for live editing
+    volumes:
+      # Config files (read-write for development)
+      - ./config.docker.toml:/app/config.toml:rw
+      - ./config.toml:/app/config.toml.backup:ro
+
+      # Mods directory (read-write for development)
+      - ./mods:/app/data/mods:rw
+
+      # Mount dist/ for quick edits (CAREFUL: this is base code!)
+      # - ./dist:/app/dist:rw
+
+      # Data directories
+      - bombsquad-data-dev:/app/data
+      - bombsquad-logs-dev:/app/logs
+
+      # Mount file watcher script
+      - ./scripts/dev-watcher.sh:/app/scripts/dev-watcher.sh:ro
+
+    # Override command to use dev watcher
+    command: ["/app/scripts/dev-watcher.sh"]
+
+    # Development environment variables
+    environment:
+      - PARTY_NAME=${PARTY_NAME:-[DEV] BombSquad Server}
+      - PARTY_IS_PUBLIC=${PARTY_IS_PUBLIC:-false}
+      - AUTHENTICATE_CLIENTS=${AUTHENTICATE_CLIENTS:-false}
+      - MAX_PARTY_SIZE=${MAX_PARTY_SIZE:-6}
+      - SESSION_TYPE=${SESSION_TYPE:-ffa}
+      - PYTHONUNBUFFERED=1
+      - BA_ROOT=/app/data
+      - DEV_MODE=1
+      - LOG_LEVEL=DEBUG
+
+    # Disable restart policy for development (easier to debug crashes)
+    restart: "no"
+
+    # Add stdin/tty for interactive debugging if needed
+    stdin_open: true
+    tty: true
+
+# Separate volumes for development (won't interfere with production)
+volumes:
+  bombsquad-data-dev:
+    driver: local
+  bombsquad-logs-dev:
+    driver: local

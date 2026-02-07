@@ -1,4 +1,6 @@
+# Production Dockerfile for BombSquad Server
 # Use lightweight Python Debian slim image for glibc compatibility
+
 FROM python:3.13-slim
 
 # Install required system dependencies and create machine-id

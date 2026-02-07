@@ -1,0 +1,53 @@
+# Development Dockerfile for BombSquad Server
+# Includes development tools and auto-reload support
+
+FROM python:3.13-slim
+
+# Install required system dependencies + development tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    dbus \
+    inotify-tools \
+    procps \
+    vim \
+    less \
+    curl \
+    net-tools \
+    && rm -rf /var/lib/apt/lists/* \
+    && dbus-uuidgen > /etc/machine-id
+
+# Create non-root user for security
+RUN useradd --create-home --shell /bin/bash bombsquad
+
+# Set working directory
+WORKDIR /app
+
+# Copy the entire bombsquad server directory
+COPY --chown=bombsquad:bombsquad . .
+
+# Make executables (Debian supports the original shebang)
+RUN chmod +x bombsquad_server dist/bombsquad_headless
+
+# Make development scripts executable
+RUN chmod +x scripts/dev-watcher.sh || true
+
+# Create data directory for logs and cache
+RUN mkdir -p data logs && chown -R bombsquad:bombsquad data logs
+
+# Switch to non-root user
+USER bombsquad
+
+# Expose the default BombSquad port
+EXPOSE 43210/udp
+
+# Set environment variables for development
+ENV PYTHONUNBUFFERED=1
+ENV BA_ROOT=/app/data
+ENV DEV_MODE=1
+ENV LOG_LEVEL=DEBUG
+
+# Health check (check for either server or watcher process)
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+    CMD pgrep -f "bombsquad_headless|dev-watcher" || exit 1
+
+# Default command (will be overridden by docker-compose.dev.yml to use watcher)
+CMD ["./bombsquad_server"]

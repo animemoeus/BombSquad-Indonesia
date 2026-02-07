@@ -89,3 +89,61 @@ docker run --rm -v bombsquad-data:/data -v $(pwd):/backup alpine tar czf /backup
 
 ## Image Size
 The final image size is approximately 80-120MB using Debian slim base, optimized for binary compatibility and deployment efficiency.
+
+## Development Mode
+
+For local development with auto-reload on code changes, use the development setup:
+
+### Quick Start (Development)
+
+```bash
+# Using Makefile (recommended)
+make dev
+
+# Or using docker compose directly
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+### Features
+
+- **Auto-reload**: Server automatically restarts when files in `mods/` change
+- **Live editing**: All code mounted as read-write volumes
+- **Debug mode**: Verbose logging and development tools included
+- **Isolated**: Separate volumes from production (`bombsquad-data-dev`)
+
+### Development Commands (with Makefile)
+
+```bash
+make help          # Show all available commands
+make dev           # Start development server
+make dev-logs      # View logs
+make dev-shell     # Open shell in container
+make dev-down      # Stop development server
+make plugin-check  # Check Python syntax
+```
+
+### File Watcher
+
+Development mode uses `inotify` to watch for changes in:
+- `mods/**/*.py` - All Python plugins
+- `config.toml` - Server configuration
+
+When a file changes, the server automatically restarts within 2 seconds.
+
+### Development vs Production
+
+| Feature | Development | Production |
+|---------|-------------|------------|
+| Auto-reload | ✅ Yes | ❌ No |
+| Public listing | Disabled | Configurable |
+| Auth required | Disabled | Enabled |
+| Log level | DEBUG | INFO |
+| Volumes | Read-Write | Read-Only |
+
+### Documentation
+
+See [DEV.md](DEV.md) for comprehensive development guide including:
+- Detailed workflow
+- Troubleshooting
+- Hot tips and aliases
+- Contributing guidelines

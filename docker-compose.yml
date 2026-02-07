@@ -1,14 +1,14 @@
-version: '3.8'
-
 services:
   bombsquad-server:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile  # Production Dockerfile
     container_name: bombsquad-server
     restart: unless-stopped
     
     # Network configuration
     ports:
-      - "43210:43210/udp"
+      - "43210:43210/udp"  # BombSquad uses UDP protocol
     
     # Environment variables for easy configuration
     environment:
@@ -21,18 +21,19 @@ services:
     # Volume mounts for persistence and configuration
     volumes:
       - ./config.docker.toml:/app/config.toml:ro
+      - ./mods:/app/data/mods:ro  # Custom mods for server behavior overrides
       - bombsquad-data:/app/data
       - bombsquad-logs:/app/logs
     
     # Resource limits to prevent resource hogging
-    deploy:
-      resources:
-        limits:
-          memory: 512M
-          cpus: '1.0'
-        reservations:
-          memory: 128M
-          cpus: '0.5'
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 512M
+    #       cpus: '1.0'
+    #     reservations:
+    #       memory: 128M
+    #       cpus: '0.5'
     
     # Health check
     healthcheck:

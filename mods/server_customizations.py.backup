@@ -1,0 +1,113 @@
+# Released under the MIT License. See LICENSE for details.
+#
+"""Server customizations plugin for BombSquad Indonesia server.
+
+This plugin overrides default game behavior without modifying base distribution files.
+All customizations are applied via monkey patching at runtime.
+"""
+
+# ba_meta require api 9
+# ba_meta export babase.Plugin
+
+from __future__ import annotations
+
+import logging
+from typing import TYPE_CHECKING
+
+import babase
+import bascenev1
+
+if TYPE_CHECKING:
+    from typing import Sequence
+
+# Configuration - Edit these values to customize behavior
+SHIELD_BRIGHTNESS_MULTIPLIER = 1.2
+CUSTOM_POWERUP_DISTRIBUTION = (
+    ("triple_bombs", 3),
+    ("ice_bombs", 3),
+    ("punch", 3),
+    ("impact_bombs", 3),
+    ("land_mines", 2),
+    ("sticky_bombs", 3),
+    ("shield", 2),
+    ("health", 1),
+    ("curse", 1),
+)
+
+
+class ServerCustomizations(babase.Plugin):
+    """Plugin that customizes server behavior via monkey patching."""
+
+    def on_app_running(self) -> None:
+        """Called when the app is running. Apply our customizations here."""
+        logging.info("ServerCustomizations: Initializing custom behavior...")
+
+        # Apply monkey patches
+        self._patch_shield_colors()
+        self._patch_powerup_distribution()
+
+        logging.info("ServerCustomizations: All customizations applied successfully!")
+
+    def _patch_shield_colors(self) -> None:
+        """Patch Spaz.equip_shields() to use player colors for shields."""
+        from bascenev1lib.actor.spaz import Spaz, SpazFactory
+
+        # Store original method
+        original_equip_shields = Spaz.equip_shields
+
+        def custom_equip_shields(self: Spaz, decay: bool = False) -> None:
+            """Custom shield equip that uses player color."""
+            if not self.node:
+                logging.exception("Can't equip shields; no node.")
+                return
+
+            factory = SpazFactory.get()
+            if self.shield is None:
+                # Get player's color and make shield match with brightness boost
+                player_color = self.node.color
+                shield_color = (
+                    min(player_color[0] * SHIELD_BRIGHTNESS_MULTIPLIER, 2.0),
+                    min(player_color[1] * SHIELD_BRIGHTNESS_MULTIPLIER, 2.0),
+                    min(player_color[2] * SHIELD_BRIGHTNESS_MULTIPLIER, 2.0),
+                )
+
+                self.shield = bascenev1.newnode(
+                    "shield",
+                    owner=self.node,
+                    attrs={"color": shield_color, "radius": 1.3},
+                )
+                self.node.connectattr("position_center", self.shield, "position")
+
+            self.shield_hitpoints = self.shield_hitpoints_max = 650
+            self.shield_decay_rate = factory.shield_decay_rate if decay else 0
+            self.shield.hurt = 0
+            factory.shield_up_sound.play(1.0, position=self.node.position)
+
+            if self.shield_decay_rate > 0:
+                self.shield_decay_timer = bascenev1.Timer(
+                    0.5, bascenev1.WeakCall(self.shield_decay), repeat=True
+                )
+                # So user can see the decay.
+                self.shield.always_show_health_bar = True
+
+        # Apply the monkey patch
+        Spaz.equip_shields = custom_equip_shields
+        logging.info("ServerCustomizations: Shield color customization applied")
+
+    def _patch_powerup_distribution(self) -> None:
+        """Patch get_default_powerup_distribution() to use custom spawn rates."""
+        import bascenev1._powerup as powerup_module
+
+        def custom_get_default_powerup_distribution() -> Sequence[tuple[str, int]]:
+            """Custom powerup distribution with increased shield spawn rate."""
+            return CUSTOM_POWERUP_DISTRIBUTION
+
+        # Apply the monkey patch
+        powerup_module.get_default_powerup_distribution = (
+            custom_get_default_powerup_distribution
+        )
+        logging.info("ServerCustomizations: Powerup distribution customization applied")
+
+    def on_app_shutdown(self) -> None:
+        """Called when app is shutting down."""
+        logging.info("ServerCustomizations: Plugin shutting down")
